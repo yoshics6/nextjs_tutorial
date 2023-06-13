@@ -21,6 +21,7 @@ import { testReducer } from "@/features/test";
 import { saddleReducer } from "@/features/admin/saddle_stitch";
 import { coverPaperReducer } from "@/features/admin/cover_paper";
 import { textPaperReducer } from "@/features/admin/text_paper";
+import { textNoReducer } from "@/features/admin/text_no";
 
 const combinedReducer: any = combineReducers({
   login: loginReducer,
@@ -32,6 +33,7 @@ const combinedReducer: any = combineReducers({
   saddle_stitch: saddleReducer,
   cover_paper: coverPaperReducer,
   text_paper: textPaperReducer,
+  text_no : textNoReducer,
 });
 
 // BINDING MIDDLEWARE

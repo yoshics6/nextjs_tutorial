@@ -23,6 +23,14 @@ import ContactMailIcon from "@mui/icons-material/ContactMail";
 import PrintingIcon from "@mui/icons-material/FileCopy";
 import Image from "next/image";
 import { useSelector } from "react-redux";
+
+import ListSubheader from "@mui/material/ListSubheader";
+import DraftsIcon from "@mui/icons-material/Drafts";
+import SendIcon from "@mui/icons-material/Send";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import StarBorder from "@mui/icons-material/StarBorder";
+
 const drawerWidth = 240;
 
 const DrawerHeader = styled("div")(({ theme }) => ({
@@ -49,6 +57,12 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
   const [saddleOpen, setsaddleOpen] = React.useState<boolean>(false);
   const [coverPaperOpen, setcoverPaperOpen] = React.useState<boolean>(false);
   const [textPaperOpen, settextPaperOpen] = React.useState<boolean>(false);
+
+  const [open_menu, setOpen] = React.useState<boolean>(false);
+
+  const handleClick = () => {
+    setOpen(!open_menu);
+  };
 
   return (
     <Drawer
@@ -262,6 +276,64 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
           </ListItem>
         </Link>
       </List>
+
+      <List>
+        <Link
+          href="/admin/text_no"
+          style={{ textDecoration: "none", color: "#000000DE" }}
+          passHref
+        >
+          <ListItem
+            button
+            onClick={() => settextPaperOpen(!textPaperOpen)}
+            className={
+              router.pathname === "/admin/text_no"
+                ? "Mui-selected"
+                : router.pathname === "/admin/text_no/edit"
+                ? "Mui-selected"
+                : router.pathname === "/admin/text_no/add"
+                ? "Mui-selected"
+                : router.pathname === "/admin/text_no/upload"
+                ? "Mui-selected"
+                : ""
+            }
+          >
+            <ListItemIcon>
+              <PrintingIcon />
+            </ListItemIcon>
+            <ListItemText primary="Text No" />
+          </ListItem>
+        </Link>
+      </List>
+
+      {/* <List
+        sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+        component="nav"
+        aria-labelledby="nested-list-subheader"
+        subheader={
+          <ListSubheader component="div" id="nested-list-subheader">
+            <hr />
+          </ListSubheader>
+        }
+      >
+        <ListItemButton onClick={handleClick}>
+          <ListItemIcon>
+            <InboxIcon />
+          </ListItemIcon>
+          <ListItemText primary="Database" />
+          {open_menu ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+        <Collapse in={open_menu} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItemButton sx={{ pl: 4 }}>
+              <ListItemIcon>
+                <StarBorder />
+              </ListItemIcon>
+              <ListItemText primary="Starred" />
+            </ListItemButton>
+          </List>
+        </Collapse>
+      </List> */}
     </Drawer>
   );
 }
