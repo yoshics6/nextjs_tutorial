@@ -21,88 +21,16 @@ export interface EnhancedTableToolbarProps {
 
 export const headCells: readonly HeadCell[] = [
   {
-    id: "sadd_type",
+    id: "printing_no",
     numeric: false,
     disablePadding: true,
-    label: "Type",
+    label: "No.",
   },
   {
-    id: "sadd_finished_size",
+    id: "printing_name",
     numeric: false,
     disablePadding: true,
-    label: "Finished Size",
-  },
-  {
-    id: "sadd_cover",
-    numeric: false,
-    disablePadding: true,
-    label: "Cover",
-  },
-  {
-    id: "sadd_text",
-    numeric: false,
-    disablePadding: true,
-    label: "Text",
-  },
-  {
-    id: "sadd_cover_paper",
-    numeric: false,
-    disablePadding: true,
-    label: "Cover Paper",
-  },
-  {
-    id: "sadd_text_paper",
-    numeric: false,
-    disablePadding: true,
-    label: "Text Paper",
-  },
-  {
-    id: "sadd_printing",
-    numeric: false,
-    disablePadding: true,
-    label: "Printing",
-  },
-  {
-    id: "sadd_cover_coating",
-    numeric: false,
-    disablePadding: true,
-    label: "Cover Coating",
-  },
-  {
-    id: "sadd_text_coating",
-    numeric: false,
-    disablePadding: true,
-    label: "Text Coating",
-  },
-  {
-    id: "sadd_1000",
-    numeric: false,
-    disablePadding: true,
-    label: "1000",
-  },
-  {
-    id: "sadd_2000",
-    numeric: false,
-    disablePadding: true,
-    label: "2000",
-  },
-  {
-    id: "sadd_3000",
-    numeric: false,
-    disablePadding: true,
-    label: "3000",
-  },
-  {
-    id: "sadd_4000",
-    numeric: false,
-    disablePadding: true,
-    label: "4000",
-  },
-  {
-    id: "sadd_5000",
-    numeric: false,
-    disablePadding: true,
-    label: "5000",
+    label: "Name",
   },
   {
     id: "-",

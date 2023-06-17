@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 5.1.0
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 13, 2023 at 11:27 AM
--- Server version: 10.1.19-MariaDB
--- PHP Version: 7.0.13
+-- Generation Time: Jun 14, 2023 at 11:35 AM
+-- Server version: 10.4.18-MariaDB
+-- PHP Version: 8.0.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -33,8 +34,8 @@ CREATE TABLE `banner` (
   `filename` text NOT NULL,
   `status` enum('Active','Inactive') NOT NULL DEFAULT 'Active',
   `active` enum('Yes','No') NOT NULL DEFAULT 'Yes',
-  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
-  `arr` int(11) NOT NULL DEFAULT '0'
+  `created_at` datetime DEFAULT current_timestamp(),
+  `arr` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -60,7 +61,7 @@ CREATE TABLE `contact` (
   `phone_number` text NOT NULL,
   `email` text NOT NULL,
   `message` text NOT NULL,
-  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `created_at` datetime DEFAULT current_timestamp(),
   `subject` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -73,7 +74,7 @@ CREATE TABLE `contact` (
 CREATE TABLE `cover_paper` (
   `cp_id` int(11) NOT NULL,
   `cp_name` varchar(255) NOT NULL,
-  `cp_created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `cp_created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -111,7 +112,7 @@ CREATE TABLE `news` (
   `topic` text NOT NULL,
   `detail` text NOT NULL,
   `status` enum('Publish','Draft') NOT NULL DEFAULT 'Publish',
-  `created_at` datetime DEFAULT CURRENT_TIMESTAMP
+  `created_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -120,6 +121,28 @@ CREATE TABLE `news` (
 
 INSERT INTO `news` (`news_id`, `post_date`, `topic`, `detail`, `status`, `created_at`) VALUES
 (3, '2023-06-02', 'test', '<p>test</p>', 'Publish', '2023-06-02 23:33:24');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `printing`
+--
+
+CREATE TABLE `printing` (
+  `printing_id` int(11) NOT NULL,
+  `printing_name` varchar(255) NOT NULL,
+  `printing_created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `printing`
+--
+
+INSERT INTO `printing` (`printing_id`, `printing_name`, `printing_created_at`) VALUES
+(1, '1/0C', '2023-06-14 14:43:41'),
+(2, '1/1C', '2023-06-14 14:43:46'),
+(3, '4/0C', '2023-06-14 14:43:52'),
+(4, '4/4C', '2023-06-14 14:43:57');
 
 -- --------------------------------------------------------
 
@@ -143,7 +166,7 @@ CREATE TABLE `saddle_stitch` (
   `sadd_3000` int(11) NOT NULL,
   `sadd_4000` int(11) NOT NULL,
   `sadd_5000` int(11) NOT NULL,
-  `sadd_created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `sadd_created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -162,7 +185,7 @@ INSERT INTO `saddle_stitch` (`sadd_id`, `sadd_type`, `sadd_finished_size`, `sadd
 CREATE TABLE `text_no` (
   `text_no_id` int(11) NOT NULL,
   `text_no_name` varchar(255) NOT NULL,
-  `text_no_created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `text_no_created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -213,7 +236,7 @@ INSERT INTO `text_no` (`text_no_id`, `text_no_name`, `text_no_created_at`) VALUE
 CREATE TABLE `text_paper` (
   `text_id` int(11) NOT NULL,
   `text_name` varchar(255) NOT NULL,
-  `text_created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `text_created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -242,7 +265,7 @@ CREATE TABLE `users` (
   `email` text NOT NULL,
   `level` enum('Administrator','User') NOT NULL DEFAULT 'User',
   `status` enum('Active','Inactive') NOT NULL DEFAULT 'Active',
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -281,6 +304,12 @@ ALTER TABLE `news`
   ADD PRIMARY KEY (`news_id`);
 
 --
+-- Indexes for table `printing`
+--
+ALTER TABLE `printing`
+  ADD PRIMARY KEY (`printing_id`);
+
+--
 -- Indexes for table `saddle_stitch`
 --
 ALTER TABLE `saddle_stitch`
@@ -313,41 +342,56 @@ ALTER TABLE `users`
 --
 ALTER TABLE `banner`
   MODIFY `banner_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
 --
 -- AUTO_INCREMENT for table `contact`
 --
 ALTER TABLE `contact`
   MODIFY `contact_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `cover_paper`
 --
 ALTER TABLE `cover_paper`
   MODIFY `cp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
 --
 -- AUTO_INCREMENT for table `news`
 --
 ALTER TABLE `news`
   MODIFY `news_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `printing`
+--
+ALTER TABLE `printing`
+  MODIFY `printing_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
 --
 -- AUTO_INCREMENT for table `saddle_stitch`
 --
 ALTER TABLE `saddle_stitch`
   MODIFY `sadd_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 --
 -- AUTO_INCREMENT for table `text_no`
 --
 ALTER TABLE `text_no`
   MODIFY `text_no_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+
 --
 -- AUTO_INCREMENT for table `text_paper`
 --
 ALTER TABLE `text_paper`
   MODIFY `text_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

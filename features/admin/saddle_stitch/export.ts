@@ -12,8 +12,8 @@ export default async function saveAsExcel({ rows }: any) {
     { width: 25 },
     { width: 25 },
     { width: 25 },
-    { width: 25 },
-    { width: 25 },
+    { width: 35 },
+    { width: 35 },
     { width: 25 },
     { width: 25 },
     { width: 25 },
@@ -59,11 +59,11 @@ export default async function saveAsExcel({ rows }: any) {
         item.sadd_printing,
         item.sadd_cover_coating,
         item.sadd_text_coating,
-        item.sadd_1000,
-        item.sadd_2000,
-        item.sadd_3000,
-        item.sadd_4000,
-        item.sadd_5000,
+        item.sadd_1000.toLocaleString(undefined, {maximumFractionDigits:3}),
+        item.sadd_2000.toLocaleString(undefined, {maximumFractionDigits:3}),
+        item.sadd_3000.toLocaleString(undefined, {maximumFractionDigits:3}),
+        item.sadd_4000.toLocaleString(undefined, {maximumFractionDigits:3}),
+        item.sadd_5000.toLocaleString(undefined, {maximumFractionDigits:3}),
       ]);
       content.height = 20;
     })

@@ -19,7 +19,7 @@ import FormControl from "@mui/material/FormControl";
 import Swal from "sweetalert2";
 import dayjs, { Dayjs } from "dayjs";
 import { appDispatch, appSelector } from "@/store/hooks";
-import { uploadUser } from "@/features/admin/user";
+import { uploadPrinting } from "@/features/admin/printing";
 import router, { useRouter } from "next/router";
 import axios from "axios";
 import { getCookie } from "cookies-next";
@@ -106,7 +106,7 @@ const showFormExcel = ({ values, setFieldValue }: FormikProps<any>) => {
                       >
                         File Format:{" "}
                         <a
-                          href={`/format/saddle_stitch/Upload_Saddle_Stitch.xlsx`}
+                          href={`/format/printing/Upload_Printing.xlsx`}
                           style={{
                             marginLeft: "10px",
                             color: "blue",
@@ -163,7 +163,7 @@ const showFormExcel = ({ values, setFieldValue }: FormikProps<any>) => {
             variant="contained"
             color="error"
             fullWidth
-            onClick={() => router.push("/admin/saddle_stitch")}
+            onClick={() => router.push("/admin/printing")}
           >
             Cancel
           </Button>
@@ -205,16 +205,16 @@ function Upload() {
                     formData.append("file", blob, filename);
                     var urlupload = process.env.NEXT_PUBLIC_BASE_URL_API;
                     const response: any = await axios.post(
-                      `${urlupload}/saddle_stitch/upload`,
+                      `${urlupload}/printing/upload`,
                       formData
                     );
                     if (response.data.status == "success") {
                       Swal.fire(
                         "Success!",
-                        "Your saddle stitch has been uploaded.",
+                        "Your text no has been uploaded.",
                         "success"
                       ).then(function () {
-                        router.push("/admin/saddle_stitch");
+                        router.push("/admin/printing");
                       });
                     } else {
                       Swal.fire(

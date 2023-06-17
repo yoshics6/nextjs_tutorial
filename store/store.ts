@@ -18,10 +18,11 @@ import { userReducer } from "@/features/admin/user";
 import { contactReducer } from "@/features/admin/contact";
 import { bannerReducer } from "@/features/admin/banner";
 import { testReducer } from "@/features/test";
-import { saddleReducer } from "@/features/admin/saddle_stitch";
 import { coverPaperReducer } from "@/features/admin/cover_paper";
 import { textPaperReducer } from "@/features/admin/text_paper";
 import { textNoReducer } from "@/features/admin/text_no";
+import { printingReducer } from "@/features/admin/printing";
+import { saddleReducer } from "@/features/admin/saddle_stitch";
 
 const combinedReducer: any = combineReducers({
   login: loginReducer,
@@ -30,10 +31,11 @@ const combinedReducer: any = combineReducers({
   contact: contactReducer,
   banner: bannerReducer,
   teststore: testReducer,
-  saddle_stitch: saddleReducer,
   cover_paper: coverPaperReducer,
   text_paper: textPaperReducer,
-  text_no : textNoReducer,
+  text_no: textNoReducer,
+  printing: printingReducer,
+  saddle_stitch: saddleReducer,
 });
 
 // BINDING MIDDLEWARE

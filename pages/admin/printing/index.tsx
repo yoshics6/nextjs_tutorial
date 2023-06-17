@@ -27,19 +27,18 @@ import { getComparator, stableSort, Order } from "@/components/table/Table";
 import {
   EnhancedTableHead,
   EnhancedTableToolbarProps,
-} from "@/components/table/admin/saddle_stitch/TableHeads";
+} from "@/components/table/admin/printing/TableHeads";
 import {
-  getSaddle,
-  deleteSaddle,
-  deleteAllSaddle,
-  getCoverPaper,
-} from "@/features/admin/saddle_stitch";
-import saveAsExcel from "@/features/admin/saddle_stitch/export";
+  getPrinting,
+  deletePrinting,
+  deleteAllPrinting,
+} from "@/features/admin/printing";
+import saveAsExcel from "@/features/admin/printing/export";
 
-const Saddle: NextPage = () => {
+const printing: NextPage = () => {
   const dispatch = appDispatch();
   const [searched, setSearched] = React.useState<string>("");
-  const { data } = appSelector((state) => state.saddle_stitch);
+  const { data } = appSelector((state) => state.printing);
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] = useState<any>("");
   const [selected, setSelected] = useState<readonly string[]>([]);
@@ -51,13 +50,12 @@ const Saddle: NextPage = () => {
 
   // *************************** Use Effect ***************************
   React.useEffect(() => {
-    dispatch(getSaddle(""));
+    dispatch(getPrinting(""));
   }, [dispatch]);
 
   React.useEffect(() => {
-    dispatch(getSaddle(searched));
+    dispatch(getPrinting(searched));
   }, [dispatch, searched]);
-
   // *************************** Use Effect ***************************
 
   // *************************** Action ***************************
@@ -74,11 +72,11 @@ const Saddle: NextPage = () => {
       setSelected([]);
       if (result.isConfirmed) {
         let data = new FormData();
-        data.append("sadd_id", id);
+        data.append("printing_id", id);
         Swal.fire("Deleted!", "Your data has been deleted.", "success").then(
           function () {
-            dispatch(deleteSaddle(data)).then((result: any) => {
-              dispatch(getSaddle(""));
+            dispatch(deletePrinting(data)).then((result: any) => {
+              dispatch(getPrinting(""));
             });
           }
         );
@@ -99,9 +97,9 @@ const Saddle: NextPage = () => {
       if (result.isConfirmed) {
         Swal.fire("Deleted!", "Your data has been deleted.", "success").then(
           function () {
-            dispatch(deleteAllSaddle(id)).then((result: any) => {
+            dispatch(deleteAllPrinting(id)).then((result: any) => {
               if (result.payload.status == "success") {
-                dispatch(getSaddle(""));
+                dispatch(getPrinting(""));
               }
             });
           }
@@ -128,7 +126,7 @@ const Saddle: NextPage = () => {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n: any) => n.sadd_id);
+      const newSelected = rows.map((n: any) => n.printing_id);
       setSelected(newSelected);
       return;
     }
@@ -204,7 +202,7 @@ const Saddle: NextPage = () => {
             id="tableTitle"
             component="div"
           >
-            Saddle Stitch
+            Printing
           </Typography>
         )}
         {numSelected > 0 ? (
@@ -244,18 +242,18 @@ const Saddle: NextPage = () => {
             sx={{ ml: 2, mb: 1 }}
             variant="contained"
             color="primary"
-            onClick={() => router.push("/admin/saddle_stitch/add")}
+            onClick={() => router.push("/admin/printing/add")}
           >
-            Add Saddle Stitch
+            Add Printing
           </Button>
 
           <Button
             sx={{ ml: 2, mb: 1 }}
             variant="contained"
             color="secondary"
-            onClick={() => router.push("/admin/saddle_stitch/upload")}
+            onClick={() => router.push("/admin/printing/upload")}
           >
-            Upload Saddle Stitch by excel
+            Upload Printing By Excel
           </Button>
 
           <Button
@@ -289,17 +287,19 @@ const Saddle: NextPage = () => {
                         page * rowsPerPage + rowsPerPage
                       )
                       .map((row: any, index) => {
-                        const isItemSelected = isSelected(row.sadd_id);
+                        const isItemSelected = isSelected(row.printing_id);
                         const labelId = `enhanced-table-checkbox-${index}`;
 
                         return (
                           <TableRow
                             hover
-                            onClick={(event) => handleClick(event, row.sadd_id)}
+                            onClick={(event) =>
+                              handleClick(event, row.printing_id)
+                            }
                             role="checkbox"
                             aria-checked={isItemSelected}
                             tabIndex={-1}
-                            key={row.sadd_id}
+                            key={row.printing_id}
                             selected={isItemSelected}
                           >
                             <TableCell padding="checkbox" align="center">
@@ -311,51 +311,10 @@ const Saddle: NextPage = () => {
                                 }}
                               />
                             </TableCell>
+                            <TableCell align="center">{index + 1}</TableCell>
                             <TableCell align="center">
-                              {row.sadd_type}
+                              {row.printing_name}
                             </TableCell>
-                            <TableCell align="center">
-                              {row.sadd_finished_size}
-                            </TableCell>
-                            <TableCell align="center">
-                              {row.sadd_cover}
-                            </TableCell>
-                            <TableCell align="center">
-                              {row.sadd_text}
-                            </TableCell>
-                            <TableCell align="center">
-                              {row.sadd_cover_paper}
-                            </TableCell>
-                            <TableCell align="center">
-                              {row.sadd_text_paper}
-                            </TableCell>
-                            <TableCell align="center">
-                              {row.sadd_printing}
-                            </TableCell>
-                            <TableCell align="center">
-                              {row.sadd_cover_coating}
-                            </TableCell>
-                            <TableCell align="center">
-                              {row.sadd_text_coating}
-                            </TableCell>
-                            <TableCell align="center">
-                              {row.sadd_1000?.toLocaleString(undefined, {maximumFractionDigits:3})}
-                            </TableCell>
-                            <TableCell align="center">
-                              {row.sadd_2000?.toLocaleString(undefined, {maximumFractionDigits:3})}
-                            </TableCell>
-                            <TableCell align="center">
-                              {row.sadd_3000?.toLocaleString(undefined, {maximumFractionDigits:3})}
-                            </TableCell>
-                            <TableCell align="center">
-                              {row.sadd_4000?.toLocaleString(undefined, {maximumFractionDigits:3})}
-                            </TableCell>
-                            <TableCell align="center">
-                              {row.sadd_5000?.toLocaleString(undefined, {maximumFractionDigits:3})}
-                            </TableCell>
-                            {/* <TableCell align="center">
-                              {row.status == "active" ? "Active" : "In Active"}
-                            </TableCell> */}
                             <TableCell align="center">
                               <Stack
                                 direction="row"
@@ -369,7 +328,7 @@ const Saddle: NextPage = () => {
                                   size="large"
                                   onClick={() =>
                                     router.push(
-                                      `/admin/saddle_stitch/edit?id=${row.sadd_id}`
+                                      `/admin/printing/edit?id=${row.printing_id}`
                                     )
                                   }
                                 >
@@ -380,7 +339,7 @@ const Saddle: NextPage = () => {
                                   color="error"
                                   aria-label="delete"
                                   size="large"
-                                  onClick={() => Delete(row.sadd_id)}
+                                  onClick={() => Delete(row.printing_id)}
                                 >
                                   <DeleteIcon fontSize="inherit" />
                                 </IconButton>
@@ -415,7 +374,7 @@ const Saddle: NextPage = () => {
 
 // export const getStaticProps: any = wrapper.getStaticProps(
 //   (store) => async () => {
-//     const data: any = await store.dispatch(getSaddle());
+//     const data: any = await store.dispatch(getUser());
 //     console.log(data);
 //     return {
 //       props: {
@@ -425,4 +384,4 @@ const Saddle: NextPage = () => {
 //   }
 // );
 
-export default withAuth(Saddle);
+export default withAuth(printing);

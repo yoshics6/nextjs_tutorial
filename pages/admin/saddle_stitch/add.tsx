@@ -2,7 +2,7 @@ import Layout from "@/components/admin/Layout/Layout";
 import withAuth from "@/components/admin/withAuth";
 import React, { useRef } from "react";
 import Box from "@mui/material/Box";
-import { TextField as TextFieldInput } from "formik-material-ui";
+import { TextField as TextFieldInput} from "formik-material-ui";
 import { Field, Form, Formik, FormikProps } from "formik";
 import { Button, Card, CardContent, CardActions } from "@mui/material";
 import Typography from "@mui/material/Typography";
@@ -13,65 +13,149 @@ import FormControl from "@mui/material/FormControl";
 import Swal from "sweetalert2";
 import dayjs, { Dayjs } from "dayjs";
 import { appDispatch, appSelector } from "@/store/hooks";
-import { addSaddle, getCoverPaper } from "@/features/admin/saddle_stitch";
+import {
+  addSaddle,
+  getCoverPaper,
+  getTextPaper,
+  getTextNo,
+  getPrinting,
+} from "@/features/admin/saddle_stitch";
 import router from "next/router";
+import { string } from "yup";
 
 const initialValues: any = {
-  s_type: "",
-  s_finished_size: "",
-  s_cover: "",
-  s_text: "",
-  s_cover_paper: "",
-  s_text_paper: "",
-  s_printing: "",
-  s_cover_coating: "",
-  s_text_coating: "",
-  s_1000: 0,
-  s_2000: 0,
-  s_3000: 0,
-  s_4000: 0,
-  s_5000: 0,
+  sadd_type: "",
+  sadd_finished_size: "",
+  sadd_cover: "",
+  sadd_text: "",
+  sadd_cover_paper: "",
+  sadd_text_paper: "",
+  sadd_printing: "",
+  sadd_cover_coating: "",
+  sadd_text_coating: "",
+  sadd_1000: 0,
+  sadd_2000: 0,
+  sadd_3000: 0,
+  sadd_4000: 0,
+  sadd_5000: 0,
 };
 
 function Add() {
   const dispatch = appDispatch();
-  const { data } = appSelector((state) => state.saddle_stitch);
+  const { data, data_text_no, data_text_paper, data_printing } = appSelector(
+    (state) => state.saddle_stitch
+  );
   const editorRef = useRef<any>(null);
+  const [s_type, setType] = React.useState<String>("Stitching");
   const [finished_size, setFinishedSize] = React.useState<String>("");
   const [cover, setCover] = React.useState<String>("");
   const [level, setLevel] = React.useState<String>("Administrator");
-  const [level1, setLevel1] = React.useState<String>("");
+  const [s_text, setSText] = React.useState<String>("");
+  const [s_cover, setSCoverPaper] = React.useState<String>("");
+  const [s_printing, setPrinting] = React.useState<String>("");
+  const [s_text_no, setSTextNo] = React.useState<String>("");
+  const [s_text_paper, setSTextPaper] = React.useState<String>("");
+  const [s_cover_coating, setSaddCoverCoating] = React.useState<String>("");
+  const [s_text_coating, setSaddTextCoating] = React.useState<String>("");
+  const [s_1000, setNumber1000] = React.useState();
+  const [s_2000, setNumber2000] = React.useState();
+  const [s_3000, setNumber3000] = React.useState();
+  const [s_4000, setNumber4000] = React.useState();
+  const [s_5000, setNumber5000] = React.useState();
+
+  const handleNumber1000 = (e:any) => {
+    let input = e.target.value
+    if(input.match(/^([0-9]{1,})?(\.)?([0-9]{1,})?$/))
+    setNumber1000(input)
+  }
+
+  const handleFloat1000 = () => {
+    setNumber1000(s_1000)
+  }
+
+  const handleNumber2000 = (e:any) => {
+    let input = e.target.value
+    if(input.match(/^([0-9]{1,})?(\.)?([0-9]{1,})?$/))
+    setNumber2000(input)
+  }
+
+  const handleFloat2000 = () => {
+    setNumber2000(s_2000)
+  }
+
+  const handleNumber3000 = (e:any) => {
+    let input = e.target.value
+    if(input.match(/^([0-9]{1,})?(\.)?([0-9]{1,})?$/))
+    setNumber3000(input)
+  }
+
+  const handleFloat3000 = () => {
+    setNumber3000(s_3000)
+  }
+
+  const handleNumber4000 = (e:any) => {
+    let input = e.target.value
+    if(input.match(/^([0-9]{1,})?(\.)?([0-9]{1,})?$/))
+    setNumber4000(input)
+  }
+
+  const handleFloat4000 = () => {
+    setNumber4000(s_4000)
+  }
+  
+  const handleNumber5000 = (e:any) => {
+    let input = e.target.value
+    if(input.match(/^([0-9]{1,})?(\.)?([0-9]{1,})?$/))
+    setNumber5000(input)
+  }
+
+  const handleFloat5000 = () => {
+    setNumber5000(s_5000)
+  }  
+
   React.useEffect(() => {
     dispatch(getCoverPaper("get"));
+    dispatch(getTextPaper("get"));
+    dispatch(getTextNo("get"));
+    dispatch(getPrinting("get"));
   }, [dispatch]);
 
   var rows: any = data ?? [];
-  
+  var rows_text_no: any = data_text_no ?? [];
+  var rows_text_paper: any = data_text_paper ?? [];
+  var rows_printing: any = data_printing ?? [];
+
   const showForm = ({ values, setFieldValue, isValid }: FormikProps<any>) => {
     return (
       <Form>
         <Card>
           <CardContent sx={{ padding: 4 }}>
             <Typography gutterBottom variant="h4">
-              Add Printing
+              Add Saddle Stitch
             </Typography>
 
             <Field
               fullWidth
               component={TextFieldInput}
-              name="s_type"
+              name="sadd_type"
               type="text"
               label="Type"
+              value={s_type}
+              id="filled-read-only-input"
+              InputProps={{
+              readOnly: true,
+              }}
+              variant="filled"
             />
             <br />
             <br />
             <Field
-              name="s_finished_size"
+              name="sadd_finished_size"
               style={{ marginTop: 20 }}
               component={() => (
                 <FormControl fullWidth>
                   <InputLabel>Finished Size</InputLabel>
-                  <Select
+                  <Select required
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     label="Finished Size"
@@ -95,10 +179,10 @@ function Add() {
               component={() => (
                 <FormControl fullWidth>
                   <InputLabel>Cover</InputLabel>
-                  <Select
+                  <Select required
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    label="Status"
+                    label="Cover"
                     onChange={(e: any) => {
                       setCover(e.target.value);
                     }}
@@ -113,31 +197,228 @@ function Add() {
             <br />
             <br />
             <Field
-              name="sadd_cover"
+              name="sadd_text"
               style={{ marginTop: 16 }}
               component={() => (
                 <FormControl fullWidth>
-                  <InputLabel>Cover</InputLabel>
-                  <Select
+                  <InputLabel>Text</InputLabel>
+                  <Select required
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    label="Status"
+                    label="Text"
                     onChange={(e: any) => {
-                      setLevel1(e.target.value);
+                      setSTextNo(e.target.value);
                     }}
-                    value={level1}
+                    value={s_text_no}
                     fullWidth
                   >
-                    {rows.length > 0
-                      ? rows.map((value: any) => (
-                          <MenuItem value={value.cp_id}>
-                            {value.cp_name}
+                    {rows_text_no.length > 0
+                      ? rows_text_no.map((value: any) => (
+                          <MenuItem value={value?.text_no_name}>
+                            {value?.text_no_name}
                           </MenuItem>
-                      ))
+                        ))
                       : ""}
                   </Select>
                 </FormControl>
               )}
+            />
+            <br />
+            <br />
+            <Field
+              name="sadd_cover_paper"
+              style={{ marginTop: 16 }}
+              component={() => (
+                <FormControl fullWidth>
+                  <InputLabel>Cover Paper</InputLabel>
+                  <Select required
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="Cover Paper"
+                    onChange={(e: any) => {
+                      setSCoverPaper(e.target.value);
+                    }}
+                    value={s_cover}
+                    fullWidth
+                  >
+                    {rows.length > 0
+                      ? rows.map((value: any) => (
+                          <MenuItem value={value.cp_name}>
+                            {value.cp_name}
+                          </MenuItem>
+                        ))
+                      : ""}
+                  </Select>
+                </FormControl>
+              )}
+            />
+            <br />
+            <br />
+            <Field
+              name="sadd_text_paper"
+              style={{ marginTop: 16 }}
+              component={() => (
+                <FormControl fullWidth>
+                  <InputLabel>Text Paper</InputLabel>
+                  <Select required
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="Text Paper"
+                    onChange={(e: any) => {
+                      setSTextPaper(e.target.value);
+                    }}
+                    value={s_text_paper}
+                    fullWidth
+                  >
+                    {rows_text_paper.length > 0
+                      ? rows_text_paper.map((value: any) => (
+                          <MenuItem value={value.text_name}>
+                            {value.text_name}
+                          </MenuItem>
+                        ))
+                      : ""}
+                  </Select>
+                </FormControl>
+              )}
+            />
+            <br />
+            <br />
+            <Field
+              name="sadd_printing"
+              style={{ marginTop: 16 }}
+              component={() => (
+                <FormControl fullWidth>
+                  <InputLabel>Printing</InputLabel>
+                  <Select required
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="Printing"
+                    onChange={(e: any) => {
+                      setPrinting(e.target.value);
+                    }}
+                    value={s_printing}
+                    fullWidth
+                  >
+                    {rows_printing.length > 0
+                      ? rows_printing.map((value: any) => (
+                          <MenuItem value={value.printing_name}>
+                            {value.printing_name}
+                          </MenuItem>
+                        ))
+                      : ""}
+                  </Select>
+                </FormControl>
+              )}
+            />
+            <br />
+            <br />
+            <Field
+              name="sadd_cover_coating"
+              style={{ marginTop: 20 }}
+              component={() => (
+                <FormControl fullWidth>
+                  <InputLabel>Cover Coating</InputLabel>
+                  <Select required
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="Cover Coating"
+                    onChange={(e: any) => {
+                      setSaddCoverCoating(e.target.value);
+                    }}
+                    value={s_cover_coating}
+                    fullWidth
+                  >
+                    <MenuItem value="No coating">No coating</MenuItem>
+                    <MenuItem value="PVC">PVC</MenuItem>
+                    <MenuItem value="Varnish">Varnish</MenuItem>
+                  </Select>
+                </FormControl>
+              )}
+            />
+            <br />
+            <br />
+            <Field
+              name="sadd_text_coating"
+              style={{ marginTop: 20 }}
+              component={() => (
+                <FormControl fullWidth>
+                  <InputLabel>Text Coating</InputLabel>
+                  <Select required
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="Text Coating"
+                    onChange={(e: any) => {
+                      setSaddTextCoating(e.target.value);
+                    }}
+                    value={s_text_coating}
+                    fullWidth
+                  >
+                    <MenuItem value="No coating">No coating</MenuItem>
+                    <MenuItem value="PVC">PVC</MenuItem>
+                    <MenuItem value="Varnish">Varnish</MenuItem>
+                  </Select>
+                </FormControl>
+              )}
+            />
+            <br />
+            <br />
+            <Field required
+              fullWidth
+              component={TextFieldInput}
+              name="sadd_1000"
+              type="number"
+              label="1000"
+              value={s_1000}
+              onChange = {handleNumber1000}
+              onKeyUp = {handleFloat1000}
+            />
+            <br />
+            <br />
+            <Field required
+              fullWidth
+              component={TextFieldInput}
+              name="sadd_2000"
+              type="number"
+              label="2000"
+              value={s_2000}
+              onChange = {handleNumber2000}
+              onKeyUp = {handleFloat2000}
+            />
+            <br />
+            <br />
+            <Field required
+              fullWidth
+              component={TextFieldInput}
+              name="sadd_3000"
+              type="number"
+              label="3000"
+              value={s_3000}
+              onChange = {handleNumber3000}
+              onKeyUp = {handleFloat3000}
+            />
+            <br />
+            <br />
+            <Field required
+              fullWidth
+              component={TextFieldInput}
+              name="sadd_4000"
+              type="number"
+              label="4000"
+              value={s_4000}
+              onChange = {handleNumber4000}
+              onKeyUp = {handleFloat4000}
+            />
+            <br />
+            <br />
+            <Field required
+              fullWidth
+              component={TextFieldInput}
+              name="sadd_5000"
+              type="number"
+              label="5000"
+              value={s_5000}
+              onChange = {handleNumber5000}
+              onKeyUp = {handleFloat5000}
             />
             <br />
             <br />
@@ -158,7 +439,7 @@ function Add() {
               variant="contained"
               color="error"
               fullWidth
-              onClick={() => router.push("/admin/printing")}
+              onClick={() => router.push("/admin/saddle_stitch")}
             >
               Cancel
             </Button>
@@ -180,23 +461,26 @@ function Add() {
           <Formik
             validate={(values) => {
               let errors: any = {};
-              if (!values.name) errors.name = "Enter Name";
-              // if (!values.password) errors.password = "Enter Password";
-              // if (!values.fullname) errors.fullname = "Enter Fullname";
-              // if (!values.email) errors.email = "Enter Email";
-              // if (!values.status) errors.status = "Enter Status";
-              // if (!values.level) errors.level = "Enter Role";
+              // if (!values.sadd_1000) errors.sadd_1000 = "Enter 1000";
               return errors;
             }}
             initialValues={initialValues}
             onSubmit={async (values, { setSubmitting }) => {
               let data = new FormData();
-              data.append("name", values.name);
-              // data.append("password", values.password);
-              // data.append("fullname", values.fullname);
-              // data.append("email", values.email);
-              // data.append("status", "active");
-              // data.append("level", String(level));
+              data.append("sadd_type", String(s_type));
+              data.append("sadd_finished_size", String(finished_size));
+              data.append("sadd_cover", String(cover));
+              data.append("sadd_text", String(s_text_no));
+              data.append("sadd_cover_paper", String(s_cover));
+              data.append("sadd_text_paper", String(s_text_paper));
+              data.append("sadd_printing", String(s_printing));
+              data.append("sadd_cover_coating", String(s_cover_coating));
+              data.append("sadd_text_coating", String(s_text_coating));
+              data.append("sadd_1000", String(s_1000));
+              data.append("sadd_2000", String(s_2000));
+              data.append("sadd_3000", String(s_3000));
+              data.append("sadd_4000", String(s_4000));
+              data.append("sadd_5000", String(s_5000));
               dispatch(addSaddle(data)).then((result: any) => {
                 if (result.payload.data.status == "success") {
                   Swal.fire(
@@ -204,7 +488,7 @@ function Add() {
                     "Your data has been added",
                     "success"
                   ).then(function () {
-                    router.push("/admin/printing");
+                    router.push("/admin/saddle_stitch");
                   });
                 } else {
                   Swal.fire("Error!", "Please check your input", "error").then(

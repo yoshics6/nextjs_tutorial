@@ -57,6 +57,7 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
   const [saddleOpen, setsaddleOpen] = React.useState<boolean>(false);
   const [coverPaperOpen, setcoverPaperOpen] = React.useState<boolean>(false);
   const [textPaperOpen, settextPaperOpen] = React.useState<boolean>(false);
+  const [textPrintingOpen, setPrintingOpen] = React.useState<boolean>(false);
 
   const [open_menu, setOpen] = React.useState<boolean>(false);
 
@@ -114,6 +115,8 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
                 ? "Mui-selected"
                 : router.pathname === "/admin/user/add"
                 ? "Mui-selected"
+                : router.pathname === "/admin/user/upload"
+                ? "Mui-selected"
                 : ""
             }
           >
@@ -125,7 +128,7 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
         </Link>
       </List>
 
-      <List>
+      {/* <List>
         <Link
           href="/admin/banner"
           style={{ textDecoration: "none", color: "#000000DE" }}
@@ -196,7 +199,7 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
             <ListItemText primary="Contact" />
           </ListItem>
         </Link>
-      </List>
+      </List> */}
 
       <List>
         <Link
@@ -208,7 +211,15 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
             button
             onClick={() => setsaddleOpen(!saddleOpen)}
             className={
-              router.pathname === "/admin/saddle_stitch" ? "Mui-selected" : ""
+              router.pathname === "/admin/saddle_stitch"
+                ? "Mui-selected"
+                : router.pathname === "/admin/saddle_stitch/edit"
+                ? "Mui-selected"
+                : router.pathname === "/admin/saddle_stitch/add"
+                ? "Mui-selected"
+                : router.pathname === "/admin/saddle_stitch/upload"
+                ? "Mui-selected"
+                : ""
             }
           >
             <ListItemIcon>
@@ -302,6 +313,35 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
               <PrintingIcon />
             </ListItemIcon>
             <ListItemText primary="Text No" />
+          </ListItem>
+        </Link>
+      </List>
+
+      <List>
+        <Link
+          href="/admin/printing"
+          style={{ textDecoration: "none", color: "#000000DE" }}
+          passHref
+        >
+          <ListItem
+            button
+            onClick={() => setPrintingOpen(!textPrintingOpen)}
+            className={
+              router.pathname === "/admin/printing"
+                ? "Mui-selected"
+                : router.pathname === "/admin/printing/edit"
+                ? "Mui-selected"
+                : router.pathname === "/admin/printing/add"
+                ? "Mui-selected"
+                : router.pathname === "/admin/printing/upload"
+                ? "Mui-selected"
+                : ""
+            }
+          >
+            <ListItemIcon>
+              <PrintingIcon />
+            </ListItemIcon>
+            <ListItemText primary="Printing" />
           </ListItem>
         </Link>
       </List>
