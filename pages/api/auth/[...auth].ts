@@ -11,6 +11,12 @@ export const config = {
   },
 };
 
+import { render } from "@react-email/render";
+var nodemailer = require("nodemailer");
+var randtoken = require("rand-token");
+
+const reset_token = randtoken.generate(20);
+
 declare module "next" {
   interface NextApiRequest {
     decoded: any;
@@ -27,16 +33,6 @@ interface Decoded {
   fullname?: string;
   email?: string;
 }
-
-// interface UserData {
-//   user_id?: string;
-//   username?: string;
-//   password?: string;
-//   fullname?: string;
-//   email?: string;
-//   level?: string;
-// }
-// interface Users extends Array<UserData> {}
 
 import { createRouter } from "next-connect";
 const router = createRouter<NextApiRequest, NextApiResponse>();
@@ -105,6 +101,78 @@ router.get(
   async (req: NextApiRequest, res: NextApiResponse) => {
     const decoded: Decoded = req.decoded;
     res.status(200).json({ status: "success", data: decoded });
+  }
+);
+
+// forgot password
+router.post(
+  "/api/auth/forgot_password",
+  async (req: NextApiRequest, res: NextApiResponse) => {
+    const form = formidable();
+    form.parse(req, async (err, fields, files) => {
+      const { forgot_password } = fields;
+      console.log(forgot_password);
+      // const [check]: any = await connection.query(
+      //   "SELECT * FROM text_no WHERE text_no_name = ?",
+      //   [text_no_name]
+      // );
+      // if (check.length === 0) {
+      //   await connection.query(
+      //     "INSERT INTO text_no (text_no_name) " + " VALUES (?)",
+      //     [text_no_name]
+      //   );
+      //   res.status(200).json({ status: "success" });
+      // } else {
+      //   res.status(200).json({ status: "error", message: "Duplicate Name" });
+      // }
+
+      // Email
+      const to = "yoshics6@gmail.com";
+      const subject = "Reset Password";
+
+      const transporter = nodemailer.createTransport({
+        host: "smtpm.csloxinfo.com",
+        port: 587,
+        secureConnection: false, // use TLS
+        auth: {
+          user: "digitalcenter@itp.co.th",
+          // pass: "Digital16",
+          pass: "$ITP@2023$",
+        },
+        tls: {
+          ciphers: "SSLv3",
+        },
+      });
+
+      const from = `Administrator <digitalcenter@itp.co.th>`;
+      const DataHtml =
+        "Dear " +
+        to +
+        ', <br/> <br/> <p>Please click the following <a href="https://localhost:3000/reset-password?token=' +
+        reset_token +
+        '">Link</a> to reset your password.</p>';
+
+      const mailData = {
+        from: from,
+        to: to,
+        subject: subject,
+        html: DataHtml,
+      };
+
+      transporter.sendMail(mailData, function (err: any) {
+        if (err) {
+          res
+            .status(500)
+            .json({ status: "error", message: "Mail cannot send." });
+          return;
+        } else {
+          res
+            .status(200)
+            .json({ status: "success", message: "Mail has been send." });
+          return;
+        }
+      });
+    });
   }
 );
 

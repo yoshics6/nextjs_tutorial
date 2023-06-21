@@ -162,3 +162,12 @@ img {
 
 @media screen and (max-width: 767px) {
 }
+
+.password-toogle-icon {
+  position: absolute;
+  font-size: 1.33333em;
+  line-height: 0.75em;
+  vertical-align: -0.5em;
+  margin-left: -40px;
+  margin-top: 25px;
+}

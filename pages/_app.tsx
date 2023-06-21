@@ -10,8 +10,14 @@ import { PersistGate } from "redux-persist/integration/react";
 // import "@/public/static/css/stylesheet.css";
 // import "@/public/static/css/font.css";
 
-// //slide
-// import "../public/static/css/embla.css";
+// css
+import "../public/static/css/stylesheet.css";
+
+// tailwind css
+import "tailwindcss/tailwind.css";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+library.add(faEye, faEyeSlash);
 
 function MyApp({ Component, pageProps }: AppProps) {
   const store: any = useStore();

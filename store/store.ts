@@ -23,6 +23,7 @@ import { textPaperReducer } from "@/features/admin/text_paper";
 import { textNoReducer } from "@/features/admin/text_no";
 import { printingReducer } from "@/features/admin/printing";
 import { saddleReducer } from "@/features/admin/saddle_stitch";
+import { perfectBindingReducer } from "@/features/admin/perfect_binding";
 
 const combinedReducer: any = combineReducers({
   login: loginReducer,
@@ -36,6 +37,7 @@ const combinedReducer: any = combineReducers({
   text_no: textNoReducer,
   printing: printingReducer,
   saddle_stitch: saddleReducer,
+  perfect_binding: perfectBindingReducer,
 });
 
 // BINDING MIDDLEWARE

@@ -1,5 +1,4 @@
 import React from "react";
-
 //Sweetalert
 import Swal from "sweetalert2";
 
@@ -24,11 +23,6 @@ const Login = ({}: Props) => {
   const errorColor = red[500];
   const defaultValue: User = { username: "", password: "" };
   const formValidateSchema = Yup.object().shape({
-    // username: Yup.string()
-    //   .required("Username is required")
-    //   .email("Must be email format")
-    //   .trim(),
-    // password: Yup.string().required("Password is required").min(8).trim(),
     username: Yup.string().required("Username is required").trim(),
     password: Yup.string().required("Password is required").trim(),
   });
@@ -55,10 +49,14 @@ const Login = ({}: Props) => {
         .then(async (rawResponse) => {
           rawResponse.json().then((data) => {
             if (data.status == "success") {
-              // Swal.fire("Success!", "", "success").then(function () {
+              Swal.fire("Success!", "", "success").then(function () {
               location.href = "/admin/user";
-              // });
+              });
               return false;
+            }else{
+              Swal.fire("Error!", "", "error").then(function () {
+                return false;
+              });
             }
           });
         })

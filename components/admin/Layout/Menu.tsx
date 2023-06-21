@@ -55,6 +55,7 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
   const [newsOpen, setNewsOpen] = React.useState<boolean>(false);
   const [bannerOpen, setBannerOpen] = React.useState<boolean>(false);
   const [saddleOpen, setsaddleOpen] = React.useState<boolean>(false);
+  const [perfectBindingOpen, setperfectbindingOpen] = React.useState<boolean>(false);
   const [coverPaperOpen, setcoverPaperOpen] = React.useState<boolean>(false);
   const [textPaperOpen, settextPaperOpen] = React.useState<boolean>(false);
   const [textPrintingOpen, setPrintingOpen] = React.useState<boolean>(false);
@@ -229,6 +230,35 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
           </ListItem>
         </Link>
       </List>
+
+      <List>
+        <Link
+          href="/admin/perfect_binding"
+          style={{ textDecoration: "none", color: "#000000DE" }}
+          passHref
+        >
+          <ListItem
+            button
+            onClick={() => setperfectbindingOpen(!perfectBindingOpen)}
+            className={
+              router.pathname === "/admin/perfect_binding"
+                ? "Mui-selected"
+                : router.pathname === "/admin/perfect_binding/edit"
+                ? "Mui-selected"
+                : router.pathname === "/admin/perfect_binding/add"
+                ? "Mui-selected"
+                : router.pathname === "/admin/perfect_binding/upload"
+                ? "Mui-selected"
+                : ""
+            }
+          >
+            <ListItemIcon>
+              <PrintingIcon />
+            </ListItemIcon>
+            <ListItemText primary="Perfect Binding" />
+          </ListItem>
+        </Link>
+      </List>      
 
       <List>
         <Link
