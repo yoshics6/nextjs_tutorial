@@ -11,7 +11,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-import { Collapse, ListItem, Stack } from "@mui/material";
+import { Collapse, ListItem, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import { Layers, BarChart, Person } from "@mui/icons-material";
 import ImageIcon from "@mui/icons-material/Image";
@@ -30,6 +30,7 @@ import SendIcon from "@mui/icons-material/Send";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import StarBorder from "@mui/icons-material/StarBorder";
+import Settings from "@mui/icons-material/Settings";
 
 const drawerWidth = 240;
 
@@ -55,7 +56,9 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
   const [newsOpen, setNewsOpen] = React.useState<boolean>(false);
   const [bannerOpen, setBannerOpen] = React.useState<boolean>(false);
   const [saddleOpen, setsaddleOpen] = React.useState<boolean>(false);
-  const [perfectBindingOpen, setperfectbindingOpen] = React.useState<boolean>(false);
+  const [perfectBindingOpen, setperfectbindingOpen] =
+    React.useState<boolean>(false);
+  const [foldingOpen, setfoldingOpen] = React.useState<boolean>(false);
   const [coverPaperOpen, setcoverPaperOpen] = React.useState<boolean>(false);
   const [textPaperOpen, settextPaperOpen] = React.useState<boolean>(false);
   const [textPrintingOpen, setPrintingOpen] = React.useState<boolean>(false);
@@ -128,6 +131,7 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
           </ListItem>
         </Link>
       </List>
+      <hr />
 
       {/* <List>
         <Link
@@ -203,6 +207,16 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
       </List> */}
 
       <List>
+        <Typography
+          variant="h6"
+          component="h6"
+          style={{ marginLeft: "10px", color: "red" }}
+        >
+          Setting File
+        </Typography>
+      </List>
+
+      <List>
         <Link
           href="/admin/saddle_stitch"
           style={{ textDecoration: "none", color: "#000000DE" }}
@@ -258,7 +272,48 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
             <ListItemText primary="Perfect Binding" />
           </ListItem>
         </Link>
-      </List>      
+      </List>
+
+      <List>
+        <Link
+          href="/admin/folding"
+          style={{ textDecoration: "none", color: "#000000DE" }}
+          passHref
+        >
+          <ListItem
+            button
+            onClick={() => setfoldingOpen(!foldingOpen)}
+            className={
+              router.pathname === "/admin/folding"
+                ? "Mui-selected"
+                : router.pathname === "/admin/folding/edit"
+                ? "Mui-selected"
+                : router.pathname === "/admin/folding/add"
+                ? "Mui-selected"
+                : router.pathname === "/admin/folding/upload"
+                ? "Mui-selected"
+                : ""
+            }
+          >
+            <ListItemIcon>
+              <PrintingIcon />
+            </ListItemIcon>
+            <ListItemText primary="Folding" />
+          </ListItem>
+        </Link>
+      </List>
+
+      <hr />
+
+      <List>
+        <Typography
+          variant="h6"
+          component="h6"
+          style={{ marginLeft: "10px", color: "red" }}
+        >
+          Database
+        </Typography>
+      </List>
 
       <List>
         <Link
@@ -282,7 +337,7 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
             }
           >
             <ListItemIcon>
-              <PrintingIcon />
+              <Settings />
             </ListItemIcon>
             <ListItemText primary="Cover Paper" />
           </ListItem>
@@ -311,7 +366,7 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
             }
           >
             <ListItemIcon>
-              <PrintingIcon />
+              <Settings />
             </ListItemIcon>
             <ListItemText primary="Text Paper" />
           </ListItem>
@@ -340,7 +395,7 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
             }
           >
             <ListItemIcon>
-              <PrintingIcon />
+              <Settings />
             </ListItemIcon>
             <ListItemText primary="Text No" />
           </ListItem>
@@ -369,12 +424,13 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
             }
           >
             <ListItemIcon>
-              <PrintingIcon />
+              <Settings />
             </ListItemIcon>
             <ListItemText primary="Printing" />
           </ListItem>
         </Link>
       </List>
+      <hr />
 
       {/* <List
         sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
