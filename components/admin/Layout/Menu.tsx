@@ -56,9 +56,9 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
   const [newsOpen, setNewsOpen] = React.useState<boolean>(false);
   const [bannerOpen, setBannerOpen] = React.useState<boolean>(false);
   const [saddleOpen, setsaddleOpen] = React.useState<boolean>(false);
-  const [perfectBindingOpen, setperfectbindingOpen] =
-    React.useState<boolean>(false);
+  const [perfectBindingOpen, setperfectbindingOpen] = React.useState<boolean>(false);
   const [foldingOpen, setfoldingOpen] = React.useState<boolean>(false);
+  const [cuttingOpen, setcuttingOpen] = React.useState<boolean>(false);
   const [coverPaperOpen, setcoverPaperOpen] = React.useState<boolean>(false);
   const [textPaperOpen, settextPaperOpen] = React.useState<boolean>(false);
   const [textPrintingOpen, setPrintingOpen] = React.useState<boolean>(false);
@@ -303,6 +303,34 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
         </Link>
       </List>
 
+      <List>
+        <Link
+          href="/admin/cutting_sheet"
+          style={{ textDecoration: "none", color: "#000000DE" }}
+          passHref
+        >
+          <ListItem
+            button
+            onClick={() => setcuttingOpen(!cuttingOpen)}
+            className={
+              router.pathname === "/admin/cutting_sheet"
+                ? "Mui-selected"
+                : router.pathname === "/admin/cutting_sheet/edit"
+                ? "Mui-selected"
+                : router.pathname === "/admin/cutting_sheet/add"
+                ? "Mui-selected"
+                : router.pathname === "/admin/cutting_sheet/upload"
+                ? "Mui-selected"
+                : ""
+            }
+          >
+            <ListItemIcon>
+              <PrintingIcon />
+            </ListItemIcon>
+            <ListItemText primary="Cutting Sheet" />
+          </ListItem>
+        </Link>
+      </List>
       <hr />
 
       <List>
@@ -311,7 +339,7 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
           component="h6"
           style={{ marginLeft: "10px", color: "red" }}
         >
-          Database
+          Databases
         </Typography>
       </List>
 

@@ -26,7 +26,7 @@ interface foldingData {
   fold_open_size?: string;
   fold_column?: string;
   fold_page?: string;
-  fold_cover_paper?: string;
+  fold_text_paper?: string;
   fold_printing?: string;
   fold_coating?: string;
   fold_1000?: number;
@@ -66,7 +66,7 @@ router.get(
       console.log(keyword);
       const [response]: any = await connection.query(
         `SELECT * FROM folding WHERE (fold_type LIKE ? OR fold_finished_size LIKE ? OR fold_open_size LIKE ? OR fold_column LIKE ? OR fold_page LIKE ? OR  
-        fold_cover_paper LIKE ? OR fold_printing LIKE ? OR fold_coating LIKE ? OR fold_1000 LIKE ? OR fold_2000 LIKE ? OR fold_3000 LIKE ? 
+        fold_text_paper LIKE ? OR fold_printing LIKE ? OR fold_coating LIKE ? OR fold_1000 LIKE ? OR fold_2000 LIKE ? OR fold_3000 LIKE ? 
         OR fold_4000 LIKE ? OR fold_5000 LIKE ?) ORDER BY fold_id DESC`,
         [
           "%" + keyword + "%",
@@ -113,13 +113,13 @@ router.put(
     const form = formidable();
     form.parse(req, async (err, fields, files) => {
 
-      const { fold_type , fold_finished_size , fold_open_size , fold_column , fold_page , fold_cover_paper , fold_printing , fold_coating
+      const { fold_type , fold_finished_size , fold_open_size , fold_column , fold_page , fold_text_paper , fold_printing , fold_coating
       , fold_1000 , fold_2000 , fold_3000 , fold_4000 , fold_5000} = fields;
 
-      await connection.query("INSERT INTO folding (fold_type,fold_finished_size,fold_open_size,fold_column,fold_page,fold_cover_paper,fold_printing, "+
+      await connection.query("INSERT INTO folding (fold_type,fold_finished_size,fold_open_size,fold_column,fold_page,fold_text_paper,fold_printing, "+
       " fold_coating,fold_1000,fold_2000,fold_3000,fold_4000,fold_5000) "+
       " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)", [
-        fold_type,fold_finished_size,fold_open_size,fold_column,fold_page,fold_cover_paper,fold_printing,fold_coating,
+        fold_type,fold_finished_size,fold_open_size,fold_column,fold_page,fold_text_paper,fold_printing,fold_coating,
         fold_1000,fold_2000,fold_3000,fold_4000,fold_5000
       ]);
       res.status(200).json({ status: "success" });
@@ -132,12 +132,12 @@ router.post(
   async (req: NextApiRequest, res: NextApiResponse) => {
     const form = formidable();
     form.parse(req, async (err, fields, files) => {
-      const { fold_type , fold_finished_size , fold_open_size , fold_column , fold_page , fold_cover_paper , fold_printing , fold_coating
+      const { fold_type , fold_finished_size , fold_open_size , fold_column , fold_page , fold_text_paper , fold_printing , fold_coating
       , fold_1000 , fold_2000 , fold_3000 , fold_4000 , fold_5000 , fold_id} = fields;
       await connection.query("UPDATE folding SET fold_type = ? , fold_finished_size = ? , fold_open_size = ? , fold_column = ? , fold_page = ? , "+
-      " fold_cover_paper = ? , fold_printing = ? , fold_coating = ? , fold_1000 = ? , fold_2000 = ? , fold_3000 = ? ,"+
+      " fold_text_paper = ? , fold_printing = ? , fold_coating = ? , fold_1000 = ? , fold_2000 = ? , fold_3000 = ? ,"+
       " fold_4000 = ? , fold_5000 = ? WHERE fold_id = ?", [
-        fold_type , fold_finished_size , fold_open_size , fold_column , fold_page , fold_cover_paper , fold_printing , fold_coating , 
+        fold_type , fold_finished_size , fold_open_size , fold_column , fold_page , fold_text_paper , fold_printing , fold_coating , 
         fold_1000 , fold_2000 , fold_3000 , fold_4000 , fold_5000 , fold_id
       ]);
       res.status(200).json({ status: "success" });
@@ -207,7 +207,7 @@ async function importExcelUser(url: string) {
       const fold_open_size = `${rows["Open Size"]}`;
       const fold_column = `${rows["Fold"]}`;
       const fold_page = `${rows["Page"]}`;
-      const fold_cover_paper = rows["Cover Paper"];
+      const fold_text_paper = rows["Text Paper"];
       const fold_printing = rows["Printing"];
       const fold_coating = rows["Coating"];
       const fold_1000 = `${rows["1000"]}`;
@@ -222,10 +222,10 @@ async function importExcelUser(url: string) {
       // if (check.length == 0) {
       // var hashedPassword = await bcrypt.hashSync(String(pass), 12);
       // var password = hashedPassword;
-      const [add] = await connection.query("INSERT INTO folding (fold_type,fold_finished_size,fold_open_size,fold_column,fold_page,fold_cover_paper,fold_printing, "+
+      const [add] = await connection.query("INSERT INTO folding (fold_type,fold_finished_size,fold_open_size,fold_column,fold_page,fold_text_paper,fold_printing, "+
       " fold_coating,fold_1000,fold_2000,fold_3000,fold_4000,fold_5000) "+
       " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)", [
-        fold_type,fold_finished_size,fold_open_size,fold_column,fold_page,fold_cover_paper,fold_printing,fold_coating,fold_1000,fold_2000,fold_3000,fold_4000,fold_5000
+        fold_type,fold_finished_size,fold_open_size,fold_column,fold_page,fold_text_paper,fold_printing,fold_coating,fold_1000,fold_2000,fold_3000,fold_4000,fold_5000
       ]);
       // } else {
       //   status = "duplicate";

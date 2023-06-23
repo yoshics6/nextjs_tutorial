@@ -327,7 +327,7 @@ const Folding : NextPage = () => {
                               {row.fold_page}
                             </TableCell>
                             <TableCell align="center">
-                              {row.fold_cover_paper}
+                              {row.fold_text_paper}
                             </TableCell>
                             <TableCell align="center">
                               {row.fold_printing}

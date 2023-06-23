@@ -43,7 +43,7 @@ function Edit() {
   const [fold_open_size, setFoldOpenSize] = React.useState<String>("");
   const [fold_column, setFoldColumn] = React.useState<String>("");
   const [fold_page, setFoldPage] = React.useState<String>("");
-  const [fold_cover_paper, setFoldCoverPaper] = React.useState<String>("");
+  const [fold_text_paper, setFoldCoverPaper] = React.useState<String>("");
   const [fold_printing, setFoldPrinting] = React.useState<String>("");
   const [fold_coating, setFoldCoating] = React.useState<String>("");
   const [fold_1000, setNumber1000] = React.useState("");
@@ -80,7 +80,7 @@ function Edit() {
           setFoldOpenSize(value.payload[0].fold_open_size);
           setFoldColumn(value.payload[0].fold_column);
           setFoldPage(value.payload[0].fold_page)
-          setFoldCoverPaper(value.payload[0].fold_cover_paper);
+          setFoldCoverPaper(value.payload[0].fold_text_paper);
           setFoldPrinting(value.payload[0].fold_printing);
           setFoldCoating(value.payload[0].fold_coating);
           setNumber1000(value.payload[0].fold_1000);
@@ -99,7 +99,7 @@ function Edit() {
     fold_open_size: fold_open_size,
     fold_column: fold_column,
     fold_page: 	fold_page,
-    fold_cover_paper: fold_cover_paper,
+    fold_text_paper: fold_text_paper,
     fold_printing: fold_printing,
     fold_coating: fold_coating,
     fold_1000: fold_1000,
@@ -295,25 +295,25 @@ function Edit() {
             <br />
             <br />
             <Field
-              name="fold_cover_paper"
+              name="fold_text_paper"
               style={{ marginTop: 16 }}
               component={() => (
                 <FormControl fullWidth>
-                  <InputLabel>Cover Paper</InputLabel>
+                  <InputLabel>Text Paper</InputLabel>
                   <Select required
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    label="Cover Paper"
+                    label="Text Paper"
                     onChange={(e: any) => {
                       setFoldCoverPaper(e.target.value);
                     }}
-                    value={fold_cover_paper}
+                    value={fold_text_paper}
                     fullWidth
                   >
-                    {rows_data_cover_paper.length > 0
-                      ? rows_data_cover_paper.map((value: any) => (
-                          <MenuItem value={value?.cp_name}>
-                            {value?.cp_name}
+                    {rows_text_paper.length > 0
+                      ? rows_text_paper.map((value: any) => (
+                          <MenuItem value={value?.text_name}>
+                            {value?.text_name}
                           </MenuItem>
                         ))
                       : ""}
@@ -487,7 +487,7 @@ function Edit() {
               data.append("fold_open_size", String(fold_open_size));
               data.append("fold_column", String(fold_column));
               data.append("fold_page", String(fold_page));
-              data.append("fold_cover_paper", String(fold_cover_paper));
+              data.append("fold_text_paper", String(fold_text_paper));
               data.append("fold_printing", String(fold_printing));
               data.append("fold_coating", String(fold_coating));
               data.append("fold_1000", String(fold_1000));

@@ -29,7 +29,7 @@ const initialValues: any = {
   fold_open_size: "",
   fold_column: "",
   fold_page: "",
-  fold_cover_paper: "",
+  fold_text_paper: "",
   fold_printing: "",
   fold_coating: "",
   fold_1000: 0,
@@ -53,7 +53,7 @@ function Add() {
   const [fold_page, setSCoverPaper] = React.useState<String>("");
   const [s_printing, setPrinting] = React.useState<String>("");
   const [s_text_no, setSTextNo] = React.useState<String>("");
-  const [fold_cover_paper, setSTextPaper] = React.useState<String>("");
+  const [fold_text_paper, setSTextPaper] = React.useState<String>("");
   const [s_cover_coating, setSaddCoverCoating] = React.useState<String>("");
   const [fold_coating, setSaddTextCoating] = React.useState<String>("");
   const [s_1000, setNumber1000] = React.useState();
@@ -258,25 +258,25 @@ function Add() {
             <br />
             <br />
             <Field
-              name="fold_cover_paper"
+              name="fold_text_paper"
               style={{ marginTop: 16 }}
               component={() => (
                 <FormControl fullWidth>
-                  <InputLabel>Cover Paper</InputLabel>
+                  <InputLabel>Text Paper</InputLabel>
                   <Select required
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    label="Cover paper"
+                    label="Text paper"
                     onChange={(e: any) => {
                       setSTextPaper(e.target.value);
                     }}
-                    value={fold_cover_paper}
+                    value={fold_text_paper}
                     fullWidth
                   >
-                    {rows.length > 0
-                      ? rows.map((value: any) => (
-                          <MenuItem value={value.cp_id}>
-                            {value.cp_name}
+                    {rows_text_paper.length > 0
+                      ? rows_text_paper.map((value: any) => (
+                          <MenuItem value={value.text_name}>
+                            {value.text_name}
                           </MenuItem>
                         ))
                       : ""}
@@ -450,7 +450,7 @@ function Add() {
               data.append("fold_open_size", String(fold_open_size));
               data.append("fold_column", String(fold_column));
               data.append("fold_page", String(fold_page));
-              data.append("fold_cover_paper", String(fold_cover_paper));
+              data.append("fold_text_paper", String(fold_text_paper));
               data.append("fold_printing", String(s_printing));
               data.append("fold_coating", String(fold_coating));
               data.append("fold_1000", String(s_1000));
