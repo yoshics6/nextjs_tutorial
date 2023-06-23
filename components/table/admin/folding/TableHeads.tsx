@@ -63,10 +63,10 @@ export const headCells: readonly HeadCell[] = [
     label: "Printing",
   },
   {
-    id: "fold_coating",
+    id: "fold_text_coating",
     numeric: false,
     disablePadding: true,
-    label: "Coating",
+    label: "Text Coating",
   },
   {
     id: "fold_1000",

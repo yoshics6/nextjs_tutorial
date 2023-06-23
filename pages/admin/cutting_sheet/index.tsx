@@ -27,19 +27,19 @@ import { getComparator, stableSort, Order } from "@/components/table/Table";
 import {
   EnhancedTableHead,
   EnhancedTableToolbarProps,
-} from "@/components/table/admin/folding/TableHeads";
+} from "@/components/table/admin/cutting_sheet/TableHeads";
 import {
-  getFolding,
-  deleteFolding,
-  deleteAllFolding,
+  getCuttingSheet,
+  deleteCuttingSheet,
+  deleteAllCuttingSheet,
   getCoverPaper,
-} from "@/features/admin/folding";
-import saveAsExcel from "@/features/admin/folding/export";
+} from "@/features/admin/cutting_sheet";
+import saveAsExcel from "@/features/admin/cutting_sheet/export";
 
-const Folding : NextPage = () => {
+const CuttingSheet : NextPage = () => {
   const dispatch = appDispatch();
   const [searched, setSearched] = React.useState<string>("");
-  const { data } = appSelector((state) => state.folding);
+  const { data } = appSelector((state) => state.cutting_sheet);
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] = useState<any>("");
   const [selected, setSelected] = useState<readonly string[]>([]);
@@ -51,11 +51,11 @@ const Folding : NextPage = () => {
 
   // *************************** Use Effect ***************************
   React.useEffect(() => {
-    dispatch(getFolding(""));
+    dispatch(getCuttingSheet(""));
   }, [dispatch]);
 
   React.useEffect(() => {
-    dispatch(getFolding(searched));
+    dispatch(getCuttingSheet(searched));
   }, [dispatch, searched]);
 
   // *************************** Use Effect ***************************
@@ -74,11 +74,11 @@ const Folding : NextPage = () => {
       setSelected([]);
       if (result.isConfirmed) {
         let data = new FormData();
-        data.append("fold_id", id);
+        data.append("cutt_id", id);
         Swal.fire("Deleted!", "Your data has been deleted.", "success").then(
           function () {
-            dispatch(deleteFolding(data)).then((result: any) => {
-              dispatch(getFolding(""));
+            dispatch(deleteCuttingSheet(data)).then((result: any) => {
+              dispatch(getCuttingSheet(""));
             });
           }
         );
@@ -99,9 +99,9 @@ const Folding : NextPage = () => {
       if (result.isConfirmed) {
         Swal.fire("Deleted!", "Your data has been deleted.", "success").then(
           function () {
-            dispatch(deleteAllFolding(id)).then((result: any) => {
+            dispatch(deleteAllCuttingSheet(id)).then((result: any) => {
               if (result.payload.status == "success") {
-                dispatch(getFolding(""));
+                dispatch(getCuttingSheet(""));
               }
             });
           }
@@ -128,7 +128,7 @@ const Folding : NextPage = () => {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n: any) => n.fold_id);
+      const newSelected = rows.map((n: any) => n.cutt_id);
       setSelected(newSelected);
       return;
     }
@@ -204,7 +204,7 @@ const Folding : NextPage = () => {
             id="tableTitle"
             component="div"
           >
-            Folding
+            Cutting Sheet
           </Typography>
         )}
         {numSelected > 0 ? (
@@ -244,18 +244,18 @@ const Folding : NextPage = () => {
             sx={{ ml: 2, mb: 1 }}
             variant="contained"
             color="primary"
-            onClick={() => router.push("/admin/folding/add")}
+            onClick={() => router.push("/admin/cutting_sheet/add")}
           >
-            Add Folding
+            Add Cutting Sheet
           </Button>
 
           <Button
             sx={{ ml: 2, mb: 1 }}
             variant="contained"
             color="secondary"
-            onClick={() => router.push("/admin/folding/upload")}
+            onClick={() => router.push("/admin/cutting_sheet/upload")}
           >
-            Upload Folding by excel
+            Upload Cutting Sheet by excel
           </Button>
 
           <Button
@@ -289,17 +289,17 @@ const Folding : NextPage = () => {
                         page * rowsPerPage + rowsPerPage
                       )
                       .map((row: any, index) => {
-                        const isItemSelected = isSelected(row.fold_id);
+                        const isItemSelected = isSelected(row.cutt_id);
                         const labelId = `enhanced-table-checkbox-${index}`;
 
                         return (
                           <TableRow
                             hover
-                            onClick={(event) => handleClick(event, row.fold_id)}
+                            onClick={(event) => handleClick(event, row.cutt_id)}
                             role="checkbox"
                             aria-checked={isItemSelected}
                             tabIndex={-1}
-                            key={row.fold_id}
+                            key={row.cutt_id}
                             selected={isItemSelected}
                           >
                             <TableCell padding="checkbox" align="center">
@@ -312,43 +312,37 @@ const Folding : NextPage = () => {
                               />
                             </TableCell>
                             <TableCell align="center">
-                              {row.fold_type}
+                              {row.cutt_type}
                             </TableCell>
                             <TableCell align="center">
-                              {row.fold_finished_size}
+                              {row.cutt_finished_size}
                             </TableCell>
                             <TableCell align="center">
-                              {row.fold_open_size}
+                              {row.cutt_page}
                             </TableCell>
                             <TableCell align="center">
-                              {row.fold_column}
+                              {row.cutt_text_paper}
                             </TableCell>
                             <TableCell align="center">
-                              {row.fold_page}
+                              {row.cutt_printing}
                             </TableCell>
                             <TableCell align="center">
-                              {row.fold_text_paper}
+                              {row.cutt_text_coating}
                             </TableCell>
                             <TableCell align="center">
-                              {row.fold_printing}
+                              {row.cutt_1000?.toLocaleString(undefined, {maximumFractionDigits:3})}
                             </TableCell>
                             <TableCell align="center">
-                              {row.fold_text_coating}
+                              {row.cutt_2000?.toLocaleString(undefined, {maximumFractionDigits:3})}
                             </TableCell>
                             <TableCell align="center">
-                              {row.fold_1000?.toLocaleString(undefined, {maximumFractionDigits:3})}
+                              {row.cutt_3000?.toLocaleString(undefined, {maximumFractionDigits:3})}
                             </TableCell>
                             <TableCell align="center">
-                              {row.fold_2000?.toLocaleString(undefined, {maximumFractionDigits:3})}
+                              {row.cutt_4000?.toLocaleString(undefined, {maximumFractionDigits:3})}
                             </TableCell>
                             <TableCell align="center">
-                              {row.fold_3000?.toLocaleString(undefined, {maximumFractionDigits:3})}
-                            </TableCell>
-                            <TableCell align="center">
-                              {row.fold_4000?.toLocaleString(undefined, {maximumFractionDigits:3})}
-                            </TableCell>
-                            <TableCell align="center">
-                              {row.fold_5000?.toLocaleString(undefined, {maximumFractionDigits:3})}
+                              {row.cutt_5000?.toLocaleString(undefined, {maximumFractionDigits:3})}
                             </TableCell>
                             {/* <TableCell align="center">
                               {row.status == "active" ? "Active" : "In Active"}
@@ -366,7 +360,7 @@ const Folding : NextPage = () => {
                                   size="large"
                                   onClick={() =>
                                     router.push(
-                                      `/admin/folding/edit?id=${row.fold_id}`
+                                      `/admin/cutting_sheet/edit?id=${row.cutt_id}`
                                     )
                                   }
                                 >
@@ -377,7 +371,7 @@ const Folding : NextPage = () => {
                                   color="error"
                                   aria-label="delete"
                                   size="large"
-                                  onClick={() => Delete(row.fold_id)}
+                                  onClick={() => Delete(row.cutt_id)}
                                 >
                                   <DeleteIcon fontSize="inherit" />
                                 </IconButton>
@@ -422,4 +416,4 @@ const Folding : NextPage = () => {
 //   }
 // );
 
-export default withAuth(Folding);
+export default withAuth(CuttingSheet);

@@ -20,22 +20,20 @@ declare module "next" {
   }
 }
 
-interface foldingData {
-  fold_type?: string;
-  fold_finished_size?: string;
-  fold_open_size?: string;
-  fold_column?: string;
-  fold_page?: string;
-  fold_text_paper?: string;
-  fold_printing?: string;
-  fold_text_coating?: string;
-  fold_1000?: number;
-  fold_2000?: number;
-  fold_3000?: number;
-  fold_4000?: number;
-  fold_5000?: number;
+interface cuttingSheetData {
+  cutt_type?: string;
+  cutt_finished_size?: string;
+  cutt_page?: string;
+  cutt_text_paper?: string;
+  cutt_printing?: string;
+  cutt_text_coating?: string;
+  cutt_1000?: number;
+  cutt_2000?: number;
+  cutt_3000?: number;
+  cutt_4000?: number;
+  cutt_5000?: number;
 }
-interface Folding extends Array<foldingData> {}
+interface Cutting extends Array<cuttingSheetData> {}
 
 // Middleware
 router.use(async (req: NextApiRequest, res: NextApiResponse, next) => {
@@ -45,11 +43,11 @@ router.use(async (req: NextApiRequest, res: NextApiResponse, next) => {
 });
 
 router.get(
-  "/api/folding/lists",
+  "/api/cutting_sheet/lists",
   async (req: NextApiRequest, res: NextApiResponse, next: any) => {
     try {
       const [response]: any = await connection.query(
-        `SELECT * FROM folding ORDER BY fold_id DESC`
+        `SELECT * FROM cutting_sheet ORDER BY cutt_id DESC`
       );
       res.status(200).json({ status: "success", data: response });
     } catch {
@@ -59,18 +57,16 @@ router.get(
 );
 
 router.get(
-  "/api/folding/get",
+  "/api/cutting_sheet/get",
   async (req: NextApiRequest, res: NextApiResponse, next: any) => {
     const { keyword } = req.query;
     try {
       console.log(keyword);
       const [response]: any = await connection.query(
-        `SELECT * FROM folding WHERE (fold_type LIKE ? OR fold_finished_size LIKE ? OR fold_open_size LIKE ? OR fold_column LIKE ? OR fold_page LIKE ? OR  
-        fold_text_paper LIKE ? OR fold_printing LIKE ? OR fold_text_coating LIKE ? OR fold_1000 LIKE ? OR fold_2000 LIKE ? OR fold_3000 LIKE ? 
-        OR fold_4000 LIKE ? OR fold_5000 LIKE ?) ORDER BY fold_id DESC`,
+        `SELECT * FROM cutting_sheet WHERE (cutt_type LIKE ? OR cutt_finished_size LIKE ? OR cutt_page LIKE ? OR  
+        cutt_text_paper LIKE ? OR cutt_printing LIKE ? OR cutt_text_coating LIKE ? OR cutt_1000 LIKE ? OR cutt_2000 LIKE ? OR cutt_3000 LIKE ? 
+        OR cutt_4000 LIKE ? OR cutt_5000 LIKE ?) ORDER BY cutt_id DESC`,
         [
-          "%" + keyword + "%",
-          "%" + keyword + "%",
           "%" + keyword + "%",
           "%" + keyword + "%",
           "%" + keyword + "%",
@@ -92,12 +88,12 @@ router.get(
 );
 
 router.get(
-  "/api/folding/getbyid",
+  "/api/cutting_sheet/getbyid",
   async (req: NextApiRequest, res: NextApiResponse, next: any) => {
     const { id } = req.query;
     try {
       const [response]: any = await connection.query(
-        `SELECT * FROM folding WHERE fold_id = ?`,
+        `SELECT * FROM cutting_sheet WHERE cutt_id = ?`,
         [id]
       );
       res.status(200).json({ status: "success", data: response });
@@ -108,19 +104,19 @@ router.get(
 );
 
 router.put(
-  "/api/folding/create",
+  "/api/cutting_sheet/create",
   async (req: NextApiRequest, res: NextApiResponse) => {
     const form = formidable();
     form.parse(req, async (err, fields, files) => {
 
-      const { fold_type , fold_finished_size , fold_open_size , fold_column , fold_page , fold_text_paper , fold_printing , fold_text_coating
-      , fold_1000 , fold_2000 , fold_3000 , fold_4000 , fold_5000} = fields;
+      const { cutt_type , cutt_finished_size , cutt_page , cutt_text_paper , cutt_printing , cutt_text_coating
+      , cutt_1000 , cutt_2000 , cutt_3000 , cutt_4000 , cutt_5000} = fields;
 
-      await connection.query("INSERT INTO folding (fold_type,fold_finished_size,fold_open_size,fold_column,fold_page,fold_text_paper,fold_printing, "+
-      " fold_text_coating,fold_1000,fold_2000,fold_3000,fold_4000,fold_5000) "+
-      " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)", [
-        fold_type,fold_finished_size,fold_open_size,fold_column,fold_page,fold_text_paper,fold_printing,fold_text_coating,
-        fold_1000,fold_2000,fold_3000,fold_4000,fold_5000
+      await connection.query("INSERT INTO cutting_sheet (cutt_type,cutt_finished_size,cutt_page,cutt_text_paper,cutt_printing, "+
+      " cutt_text_coating,cutt_1000,cutt_2000,cutt_3000,cutt_4000,cutt_5000) "+
+      " VALUES (?,?,?,?,?,?,?,?,?,?,?)", [
+        cutt_type,cutt_finished_size,cutt_page,cutt_text_paper,cutt_printing,cutt_text_coating,
+        cutt_1000,cutt_2000,cutt_3000,cutt_4000,cutt_5000
       ]);
       res.status(200).json({ status: "success" });
     });
@@ -128,17 +124,17 @@ router.put(
 );
 
 router.post(
-  "/api/folding/edit",
+  "/api/cutting_sheet/edit",
   async (req: NextApiRequest, res: NextApiResponse) => {
     const form = formidable();
     form.parse(req, async (err, fields, files) => {
-      const { fold_type , fold_finished_size , fold_open_size , fold_column , fold_page , fold_text_paper , fold_printing , fold_text_coating
-      , fold_1000 , fold_2000 , fold_3000 , fold_4000 , fold_5000 , fold_id} = fields;
-      await connection.query("UPDATE folding SET fold_type = ? , fold_finished_size = ? , fold_open_size = ? , fold_column = ? , fold_page = ? , "+
-      " fold_text_paper = ? , fold_printing = ? , fold_text_coating = ? , fold_1000 = ? , fold_2000 = ? , fold_3000 = ? ,"+
-      " fold_4000 = ? , fold_5000 = ? WHERE fold_id = ?", [
-        fold_type , fold_finished_size , fold_open_size , fold_column , fold_page , fold_text_paper , fold_printing , fold_text_coating , 
-        fold_1000 , fold_2000 , fold_3000 , fold_4000 , fold_5000 , fold_id
+      const { cutt_type , cutt_finished_size , cutt_page , cutt_text_paper , cutt_printing , cutt_text_coating
+      , cutt_1000 , cutt_2000 , cutt_3000 , cutt_4000 , cutt_5000 , cutt_id} = fields;
+      await connection.query("UPDATE cutting_sheet SET cutt_type = ? , cutt_finished_size = ? , cutt_page = ? , "+
+      " cutt_text_paper = ? , cutt_printing = ? , cutt_text_coating = ? , cutt_1000 = ? , cutt_2000 = ? , cutt_3000 = ? ,"+
+      " cutt_4000 = ? , cutt_5000 = ? WHERE cutt_id = ?", [
+        cutt_type , cutt_finished_size , cutt_page , cutt_text_paper , cutt_printing , cutt_text_coating , 
+        cutt_1000 , cutt_2000 , cutt_3000 , cutt_4000 , cutt_5000 , cutt_id
       ]);
       res.status(200).json({ status: "success" });
     });
@@ -146,41 +142,41 @@ router.post(
 );
 
 router.post(
-  "/api/folding/delete",
+  "/api/cutting_sheet/delete",
   async (req: NextApiRequest, res: NextApiResponse) => {
     const form = formidable();
     form.parse(req, async (err, fields, files) => {
-      const { fold_id } = fields;
-      await connection.query(`DELETE FROM folding WHERE fold_id = ${fold_id}`);
+      const { cutt_id } = fields;
+      await connection.query(`DELETE FROM cutting_sheet WHERE cutt_id = ${cutt_id}`);
       res.status(200).json({ status: "success" });
     });
   }
 );
 
 router.post(
-  "/api/folding/deleteall",
+  "/api/cutting_sheet/deleteall",
   async (req: NextApiRequest, res: NextApiResponse) => {
     const form = formidable();
     form.parse(req, async (err, fields, files) => {
-      const { fold_id } = fields;
-      let id = fold_id.toString();
-      await connection.query(`DELETE FROM folding WHERE fold_id IN (${id})`);
+      const { cutt_id } = fields;
+      let id = cutt_id.toString();
+      await connection.query(`DELETE FROM cutting_sheet WHERE cutt_id IN (${id})`);
       res.status(200).json({ status: "success" });
     });
   }
 );
 
 router.post(
-  "/api/folding/upload",
+  "/api/cutting_sheet/upload",
   async (req: NextApiRequest, res: NextApiResponse) => {
     const form = formidable();
     form.parse(req, async (err, fields, files: any) => {
       fs.copyFileSync(
         files.file.filepath,
-        `public/upload/folding/${files.file.originalFilename}`
+        `public/upload/cutting_sheet/${files.file.originalFilename}`
       );
       var reponse = await importExcelUser(
-        `public/upload/folding/${files.file.originalFilename}`
+        `public/upload/cutting_sheet/${files.file.originalFilename}`
       ).then((result) => {
         return result;
       });
@@ -202,19 +198,17 @@ async function importExcelUser(url: string) {
   let status = "success";
   await Promise.all(
     data.map(async (rows: any, index: any) => {
-      const fold_type = rows["Type"];
-      const fold_finished_size = rows["Finished Size"];
-      const fold_open_size = `${rows["Open Size"]}`;
-      const fold_column = `${rows["Fold"]}`;
-      const fold_page = `${rows["Page"]}`;
-      const fold_text_paper = rows["Text Paper"];
-      const fold_printing = rows["Printing"];
-      const fold_text_coating = rows["Text Coating"];
-      const fold_1000 = `${rows["1000"]}`;
-      const fold_2000 = `${rows["2000"]}`;
-      const fold_3000 = `${rows["3000"]}`;
-      const fold_4000 = `${rows["4000"]}`;
-      const fold_5000 = `${rows["5000"]}`;
+      const cutt_type = rows["Type"];
+      const cutt_finished_size = rows["Finished Size"];
+      const cutt_page = `${rows["Page"]}`;
+      const cutt_text_paper = rows["Text Paper"];
+      const cutt_printing = rows["Printing"];
+      const cutt_text_coating = rows["Text Coating"];
+      const cutt_1000 = `${rows["1000"]}`;
+      const cutt_2000 = `${rows["2000"]}`;
+      const cutt_3000 = `${rows["3000"]}`;
+      const cutt_4000 = `${rows["4000"]}`;
+      const cutt_5000 = `${rows["5000"]}`;
       // const [check]: any = await connection.query(
       //   "SELECT user_id FROM users WHERE status = 'active' AND username = ? ",
       //   [username]
@@ -222,10 +216,10 @@ async function importExcelUser(url: string) {
       // if (check.length == 0) {
       // var hashedPassword = await bcrypt.hashSync(String(pass), 12);
       // var password = hashedPassword;
-      const [add] = await connection.query("INSERT INTO folding (fold_type,fold_finished_size,fold_open_size,fold_column,fold_page,fold_text_paper,fold_printing, "+
-      " fold_text_coating,fold_1000,fold_2000,fold_3000,fold_4000,fold_5000) "+
-      " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)", [
-        fold_type,fold_finished_size,fold_open_size,fold_column,fold_page,fold_text_paper,fold_printing,fold_text_coating,fold_1000,fold_2000,fold_3000,fold_4000,fold_5000
+      const [add] = await connection.query("INSERT INTO cutting_sheet (cutt_type,cutt_finished_size,cutt_page,cutt_text_paper,cutt_printing, "+
+      " cutt_text_coating,cutt_1000,cutt_2000,cutt_3000,cutt_4000,cutt_5000) "+
+      " VALUES (?,?,?,?,?,?,?,?,?,?,?)", [
+        cutt_type,cutt_finished_size,cutt_page,cutt_text_paper,cutt_printing,cutt_text_coating,cutt_1000,cutt_2000,cutt_3000,cutt_4000,cutt_5000
       ]);
       // } else {
       //   status = "duplicate";
@@ -240,7 +234,7 @@ async function importExcelUser(url: string) {
 
 // get cover paper
 router.get(
-  "/api/folding/get_cover_paper",
+  "/api/cutting_sheet/get_cover_paper",
   async (req: NextApiRequest, res: NextApiResponse, next: any) => {
     try {
       const [response]: any = await connection.query(
@@ -256,7 +250,7 @@ router.get(
 
 // get text no
 router.get(
-  "/api/folding/get_text_no",
+  "/api/cutting_sheet/get_text_no",
   async (req: NextApiRequest, res: NextApiResponse, next: any) => {
     try {
       const [response]: any = await connection.query(
@@ -272,7 +266,7 @@ router.get(
 
 // get text paper
 router.get(
-  "/api/folding/get_text_paper",
+  "/api/cutting_sheet/get_text_paper",
   async (req: NextApiRequest, res: NextApiResponse, next: any) => {
     try {
       const [response]: any = await connection.query(
@@ -286,13 +280,13 @@ router.get(
   }
 );
 
-// get folding
+// get cutting_sheet
 router.get(
-  "/api/folding/get_folding",
+  "/api/cutting_sheet/get_cutting_sheet",
   async (req: NextApiRequest, res: NextApiResponse, next: any) => {
     try {
       const [response]: any = await connection.query(
-        `SELECT * FROM folding ORDER BY folding_name ASC`
+        `SELECT * FROM cutting_sheet ORDER BY cutting_sheet_name ASC`
       );
       // console.log(response)
       res.status(200).json({ status: "success", data: response });
@@ -304,7 +298,7 @@ router.get(
 
 // get printing
 router.get(
-  "/api/folding/get_printing",
+  "/api/cutting_sheet/get_printing",
   async (req: NextApiRequest, res: NextApiResponse, next: any) => {
     try {
       const [response]: any = await connection.query(
@@ -320,7 +314,7 @@ router.get(
 
 // get cover paper edit
 router.get(
-  "/api/folding/get_cover_paper_edit",
+  "/api/cutting_sheet/get_cover_paper_edit",
   async (req: NextApiRequest, res: NextApiResponse, next: any) => {
     try {
       const [response]: any = await connection.query(

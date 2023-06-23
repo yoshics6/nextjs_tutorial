@@ -25,6 +25,7 @@ import { printingReducer } from "@/features/admin/printing";
 import { saddleReducer } from "@/features/admin/saddle_stitch";
 import { perfectBindingReducer } from "@/features/admin/perfect_binding";
 import { foldingReducer } from "@/features/admin/folding";
+import { cuttingSheetReducer } from "@/features/admin/cutting_sheet";
 
 const combinedReducer: any = combineReducers({
   login: loginReducer,
@@ -40,6 +41,7 @@ const combinedReducer: any = combineReducers({
   saddle_stitch: saddleReducer,
   perfect_binding: perfectBindingReducer,
   folding : foldingReducer,
+  cutting_sheet : cuttingSheetReducer,
 });
 
 // BINDING MIDDLEWARE

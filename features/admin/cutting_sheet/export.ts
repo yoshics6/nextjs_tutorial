@@ -11,8 +11,6 @@ export default async function saveAsExcel({ rows }: any) {
     { width: 25 },
     { width: 25 },
     { width: 25 },
-    { width: 25 },
-    { width: 25 },
     { width: 35 },
     { width: 25 },
     { width: 25 },
@@ -26,8 +24,6 @@ export default async function saveAsExcel({ rows }: any) {
     "No",
     "Type",
     "Finished Size",
-    "Open Size",
-    "Fold",
     "Page",
     "Text Paper",
     "Printing",
@@ -48,19 +44,17 @@ export default async function saveAsExcel({ rows }: any) {
       const no = index + 1;
       content = ws.addRow([
         no,
-        item.fold_type,
-        item.fold_finished_size,
-        item.fold_open_size,
-        item.fold_column,
-        item.fold_page,
-        item.fold_text_paper,
-        item.fold_printing,
-        item.fold_text_coating,
-        item.fold_1000.toLocaleString(undefined, {maximumFractionDigits:3}),
-        item.fold_2000.toLocaleString(undefined, {maximumFractionDigits:3}),
-        item.fold_3000.toLocaleString(undefined, {maximumFractionDigits:3}),
-        item.fold_4000.toLocaleString(undefined, {maximumFractionDigits:3}),
-        item.fold_5000.toLocaleString(undefined, {maximumFractionDigits:3}),
+        item.cutt_type,
+        item.cutt_finished_size,
+        item.cutt_page,
+        item.cutt_text_paper,
+        item.cutt_printing,
+        item.cutt_text_coating,
+        item.cutt_1000.toLocaleString(undefined, {maximumFractionDigits:3}),
+        item.cutt_2000.toLocaleString(undefined, {maximumFractionDigits:3}),
+        item.cutt_3000.toLocaleString(undefined, {maximumFractionDigits:3}),
+        item.cutt_4000.toLocaleString(undefined, {maximumFractionDigits:3}),
+        item.cutt_5000.toLocaleString(undefined, {maximumFractionDigits:3}),
       ]);
       content.height = 20;
     })
@@ -70,5 +64,5 @@ export default async function saveAsExcel({ rows }: any) {
     row.alignment = { vertical: "middle", horizontal: "center" };
   });
   const buf = await wb.xlsx.writeBuffer();
-  await saveAs(new Blob([buf]), "Folding.xlsx");
+  await saveAs(new Blob([buf]), "Cutting_Sheet.xlsx");
 }

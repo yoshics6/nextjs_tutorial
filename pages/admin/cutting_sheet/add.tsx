@@ -14,48 +14,46 @@ import Swal from "sweetalert2";
 import dayjs, { Dayjs } from "dayjs";
 import { appDispatch, appSelector } from "@/store/hooks";
 import {
-  addFolding,
+  addCuttingSheet,
   getCoverPaper,
   getTextPaper,
   getTextNo,
   getPrinting,
-} from "@/features/admin/folding";
+} from "@/features/admin/cutting_sheet";
 import router from "next/router";
 import { string } from "yup";
 
 const initialValues: any = {
-  fold_type: "",
-  fold_finished_size: "",
-  fold_open_size: "",
-  fold_column: "",
-  fold_page: "",
-  fold_text_paper: "",
-  fold_printing: "",
-  fold_text_coating: "",
-  fold_1000: 0,
-  fold_2000: 0,
-  fold_3000: 0,
-  fold_4000: 0,
-  fold_5000: 0,
+  cutt_type: "",
+  cutt_finished_size: "",
+  cutt_page: "",
+  cutt_text_paper: "",
+  cutt_printing: "",
+  cutt_text_coating: "",
+  cutt_1000: 0,
+  cutt_2000: 0,
+  cutt_3000: 0,
+  cutt_4000: 0,
+  cutt_5000: 0,
 };
 
 function Add() {
   const dispatch = appDispatch();
   const { data, data_text_no, data_text_paper, data_printing } = appSelector(
-    (state) => state.folding
+    (state) => state.cutting_sheet
   );
   const editorRef = useRef<any>(null);
-  const [fold_type, setType] = React.useState<String>("Folding");
-  const [fold_finished_size, setFinishedSize] = React.useState<String>("");
-  const [fold_open_size, setCover] = React.useState<String>("");
+  const [cutt_type, setType] = React.useState<String>("Cutting Sheet");
+  const [cutt_finished_size, setFinishedSize] = React.useState<String>("");
+  const [cutt_open_size, setCover] = React.useState<String>("");
   const [level, setLevel] = React.useState<String>("Administrator");
-  const [fold_column, setFolding] = React.useState<String>("");
-  const [fold_page, setSCoverPaper] = React.useState<String>("");
-  const [s_printing, setPrinting] = React.useState<String>("");
+  const [cutt_column, setcutting] = React.useState<String>("");
+  const [cutt_page, setSCoverPaper] = React.useState<String>("");
+  const [cutt_printing, setPrinting] = React.useState<String>("");
   const [s_text_no, setSTextNo] = React.useState<String>("");
-  const [fold_text_paper, setSTextPaper] = React.useState<String>("");
+  const [cutt_text_paper, setSTextPaper] = React.useState<String>("");
   const [s_cover_coating, setSaddCoverCoating] = React.useState<String>("");
-  const [fold_text_coating, setSaddTextCoating] = React.useState<String>("");
+  const [cutt_text_coating, setSaddTextCoating] = React.useState<String>("");
   const [s_1000, setNumber1000] = React.useState();
   const [s_2000, setNumber2000] = React.useState();
   const [s_3000, setNumber3000] = React.useState();
@@ -130,16 +128,16 @@ function Add() {
         <Card>
           <CardContent sx={{ padding: 4 }}>
             <Typography gutterBottom variant="h4">
-              Add Folding
+              Add Cutting Sheet
             </Typography>
 
             <Field
               fullWidth
               component={TextFieldInput}
-              name="fold_type"
+              name="cutt_type"
               type="text"
               label="Type"
-              value={fold_type}
+              value={cutt_type}
               id="filled-read-only-input"
               InputProps={{
               readOnly: true,
@@ -149,7 +147,7 @@ function Add() {
             <br />
             <br />
             <Field
-              name="fold_finished_size"
+              name="cutt_finished_size"
               style={{ marginTop: 20 }}
               component={() => (
                 <FormControl fullWidth>
@@ -161,7 +159,7 @@ function Add() {
                     onChange={(e: any) => {
                       setFinishedSize(e.target.value);
                     }}
-                    value={fold_finished_size}
+                    value={cutt_finished_size}
                     fullWidth
                   >
                     <MenuItem value="A4">A4</MenuItem>
@@ -175,64 +173,7 @@ function Add() {
             <br />
             <br />
             <Field
-              name="fold_open_size"
-              style={{ marginTop: 16 }}
-              component={() => (
-                <FormControl fullWidth>
-                  <InputLabel>Open Size</InputLabel>
-                  <Select required
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    label="Open Size"
-                    onChange={(e: any) => {
-                      setCover(e.target.value);
-                    }}
-                    value={fold_open_size}
-                    fullWidth
-                  >
-                    <MenuItem value="630 x 297 mm.">630 x 297 mm.</MenuItem>
-                    <MenuItem value="840 x 297 mm.">840 x 297 mm.</MenuItem>
-                    <MenuItem value="A2">A2</MenuItem>
-                    <MenuItem value="A3">A3</MenuItem>
-                    <MenuItem value="A4">A4</MenuItem>
-                    <MenuItem value="B2">B2</MenuItem>
-                    <MenuItem value="B3">B3</MenuItem>
-                    <MenuItem value="B4">B4</MenuItem>
-                  </Select>
-                </FormControl>
-              )}
-            />
-            <br />
-            <br />
-            <Field
-              name="fold_column"
-              style={{ marginTop: 16 }}
-              component={() => (
-                <FormControl fullWidth>
-                  <InputLabel>Fold</InputLabel>
-                  <Select required
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    label="Fold"
-                    onChange={(e: any) => {
-                      setFolding(e.target.value);
-                    }}
-                    value={fold_column}
-                    fullWidth
-                  >
-                    <MenuItem value="1 Fold 2 Column">1 Fold 2 Column</MenuItem>
-                    <MenuItem value="2 Fold 3 Column">2 Fold 3 Column</MenuItem>
-                    <MenuItem value="2 Fold 4 Column">2 Fold 4 Column</MenuItem>
-                    <MenuItem value="3 Fold 4 Column">3 Fold 4 Column</MenuItem>
-                    <MenuItem value="3 Fold 8 Column">3 Fold 8 Column</MenuItem>
-                  </Select>
-                </FormControl>
-              )}
-            />
-            <br />
-            <br />
-            <Field
-              name="fold_page"
+              name="cutt_page"
               style={{ marginTop: 16 }}
               component={() => (
                 <FormControl fullWidth>
@@ -244,13 +185,11 @@ function Add() {
                     onChange={(e: any) => {
                       setSCoverPaper(e.target.value);
                     }}
-                    value={fold_page}
+                    value={cutt_page}
                     fullWidth
                   >
-                    <MenuItem value="4">4</MenuItem>
-                    <MenuItem value="6">6</MenuItem>
-                    <MenuItem value="8">8</MenuItem>
-                    <MenuItem value="16">16</MenuItem>
+                    <MenuItem value="2">1</MenuItem>
+                    <MenuItem value="1">2</MenuItem>
                   </Select>
                 </FormControl>
               )}
@@ -258,7 +197,7 @@ function Add() {
             <br />
             <br />
             <Field
-              name="fold_text_paper"
+              name="cutt_text_paper"
               style={{ marginTop: 16 }}
               component={() => (
                 <FormControl fullWidth>
@@ -270,7 +209,7 @@ function Add() {
                     onChange={(e: any) => {
                       setSTextPaper(e.target.value);
                     }}
-                    value={fold_text_paper}
+                    value={cutt_text_paper}
                     fullWidth
                   >
                     {rows_text_paper.length > 0
@@ -287,7 +226,7 @@ function Add() {
             <br />
             <br />
             <Field
-              name="fold_printing"
+              name="cutt_printing"
               style={{ marginTop: 16 }}
               component={() => (
                 <FormControl fullWidth>
@@ -299,7 +238,7 @@ function Add() {
                     onChange={(e: any) => {
                       setPrinting(e.target.value);
                     }}
-                    value={s_printing}
+                    value={cutt_printing}
                     fullWidth
                   >
                     {rows_printing.length > 0
@@ -316,7 +255,7 @@ function Add() {
             <br />
             <br />
             <Field
-              name="fold_text_coating"
+              name="cutt_text_coating"
               style={{ marginTop: 20 }}
               component={() => (
                 <FormControl fullWidth>
@@ -328,7 +267,7 @@ function Add() {
                     onChange={(e: any) => {
                       setSaddTextCoating(e.target.value);
                     }}
-                    value={fold_text_coating}
+                    value={cutt_text_coating}
                     fullWidth
                   >
                     <MenuItem value="No coating">No coating</MenuItem>
@@ -343,7 +282,7 @@ function Add() {
             <Field required
               fullWidth
               component={TextFieldInput}
-              name="fold_1000"
+              name="cutt_1000"
               type="number"
               label="1000"
               value={s_1000}
@@ -355,7 +294,7 @@ function Add() {
             <Field required
               fullWidth
               component={TextFieldInput}
-              name="fold_2000"
+              name="cutt_2000"
               type="number"
               label="2000"
               value={s_2000}
@@ -367,7 +306,7 @@ function Add() {
             <Field required
               fullWidth
               component={TextFieldInput}
-              name="fold_3000"
+              name="cutt_3000"
               type="number"
               label="3000"
               value={s_3000}
@@ -379,7 +318,7 @@ function Add() {
             <Field required
               fullWidth
               component={TextFieldInput}
-              name="fold_4000"
+              name="cutt_4000"
               type="number"
               label="4000"
               value={s_4000}
@@ -391,7 +330,7 @@ function Add() {
             <Field required
               fullWidth
               component={TextFieldInput}
-              name="fold_5000"
+              name="cutt_5000"
               type="number"
               label="5000"
               value={s_5000}
@@ -417,7 +356,7 @@ function Add() {
               variant="contained"
               color="error"
               fullWidth
-              onClick={() => router.push("/admin/folding")}
+              onClick={() => router.push("/admin/cutting_sheet")}
             >
               Cancel
             </Button>
@@ -439,33 +378,31 @@ function Add() {
           <Formik
             validate={(values) => {
               let errors: any = {};
-              // if (!values.fold_1000) errors.fold_1000 = "Enter 1000";
+              // if (!values.cutt_1000) errors.cutt_1000 = "Enter 1000";
               return errors;
             }}
             initialValues={initialValues}
             onSubmit={async (values, { setSubmitting }) => {
               let data = new FormData();
-              data.append("fold_type", String(fold_type));
-              data.append("fold_finished_size", String(fold_finished_size));
-              data.append("fold_open_size", String(fold_open_size));
-              data.append("fold_column", String(fold_column));
-              data.append("fold_page", String(fold_page));
-              data.append("fold_text_paper", String(fold_text_paper));
-              data.append("fold_printing", String(s_printing));
-              data.append("fold_text_coating", String(fold_text_coating));
-              data.append("fold_1000", String(s_1000));
-              data.append("fold_2000", String(s_2000));
-              data.append("fold_3000", String(s_3000));
-              data.append("fold_4000", String(s_4000));
-              data.append("fold_5000", String(s_5000));
-              dispatch(addFolding(data)).then((result: any) => {
+              data.append("cutt_type", String(cutt_type));
+              data.append("cutt_finished_size", String(cutt_finished_size));
+              data.append("cutt_page", String(cutt_page));
+              data.append("cutt_text_paper", String(cutt_text_paper));
+              data.append("cutt_printing", String(cutt_printing));
+              data.append("cutt_text_coating", String(cutt_text_coating));
+              data.append("cutt_1000", String(s_1000));
+              data.append("cutt_2000", String(s_2000));
+              data.append("cutt_3000", String(s_3000));
+              data.append("cutt_4000", String(s_4000));
+              data.append("cutt_5000", String(s_5000));
+              dispatch(addCuttingSheet(data)).then((result: any) => {
                 if (result.payload.data.status == "success") {
                   Swal.fire(
                     "Success!",
                     "Your data has been added",
                     "success"
                   ).then(function () {
-                    router.push("/admin/folding");
+                    router.push("/admin/cutting_sheet");
                   });
                 } else {
                   Swal.fire("Error!", "Please check your input", "error").then(

@@ -7,7 +7,7 @@ export type FoldingState = {
     fold_page: string;
     fold_text_paper: string;
     fold_printing: string;
-    fold_coating: string;
+    fold_text_coating: string;
     fold_1000: number;
     fold_2000: number;
     fold_3000: number;
@@ -22,7 +22,7 @@ export type FoldingState = {
     fold_page: string;
     fold_text_paper: string;
     fold_printing: string;
-    fold_coating: string;
+    fold_text_coating: string;
     fold_1000: number;
     fold_2000: number;
     fold_3000: number;
@@ -37,7 +37,7 @@ export type FoldingState = {
     fold_page: string;
     fold_text_paper: string;
     fold_printing: string;
-    fold_coating: string;
+    fold_text_coating: string;
     fold_1000: number;
     fold_2000: number;
     fold_3000: number;
@@ -52,7 +52,7 @@ export type FoldingState = {
     fold_page: string;
     fold_text_paper: string;
     fold_printing: string;
-    fold_coating: string;
+    fold_text_coating: string;
     fold_1000: number;
     fold_2000: number;
     fold_3000: number;
@@ -67,7 +67,7 @@ export type FoldingState = {
     fold_page: string;
     fold_text_paper: string;
     fold_printing: string;
-    fold_coating: string;
+    fold_text_coating: string;
     fold_1000: number;
     fold_2000: number;
     fold_3000: number;

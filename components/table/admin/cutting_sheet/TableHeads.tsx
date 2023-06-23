@@ -39,10 +39,10 @@ export const headCells: readonly HeadCell[] = [
     label: "Page",
   },
   {
-    id: "cutt_cover_paper",
+    id: "cutt_text_paper",
     numeric: false,
     disablePadding: true,
-    label: "Cover Paper",
+    label: "Text Paper",
   },
   {
     id: "cutt_printing",
@@ -51,10 +51,10 @@ export const headCells: readonly HeadCell[] = [
     label: "Printing",
   },
   {
-    id: "cutt_coating",
+    id: "cutt_text_coating",
     numeric: false,
     disablePadding: true,
-    label: "Coating",
+    label: "Text Coating",
   },
   {
     id: "cutt_1000",
