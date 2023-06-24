@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 5.1.0
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 22, 2023 at 12:42 PM
--- Server version: 10.1.19-MariaDB
--- PHP Version: 7.0.13
+-- Generation Time: Jun 23, 2023 at 11:10 AM
+-- Server version: 10.4.18-MariaDB
+-- PHP Version: 8.0.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -33,8 +34,8 @@ CREATE TABLE `banner` (
   `filename` text NOT NULL,
   `status` enum('Active','Inactive') NOT NULL DEFAULT 'Active',
   `active` enum('Yes','No') NOT NULL DEFAULT 'Yes',
-  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
-  `arr` int(11) NOT NULL DEFAULT '0'
+  `created_at` datetime DEFAULT current_timestamp(),
+  `arr` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -60,7 +61,7 @@ CREATE TABLE `contact` (
   `phone_number` text NOT NULL,
   `email` text NOT NULL,
   `message` text NOT NULL,
-  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `created_at` datetime DEFAULT current_timestamp(),
   `subject` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -73,7 +74,7 @@ CREATE TABLE `contact` (
 CREATE TABLE `cover_paper` (
   `cp_id` int(11) NOT NULL,
   `cp_name` varchar(255) NOT NULL,
-  `cp_created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `cp_created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -110,16 +111,24 @@ CREATE TABLE `cutting_sheet` (
   `cutt_type` varchar(255) NOT NULL,
   `cutt_finished_size` enum('A4','A5','B4','B5') NOT NULL,
   `cutt_page` enum('1','2') NOT NULL,
-  `cutt_cover_paper` enum('Art Card 210 gsm','Woodfree 80 gsm','Art Card 190 gsm','Art Card 230 gsm','Woodfree 100 gsm','Woodfree 120 gsm','White Card  120 gsm','White Card 150 gsm','Gloss Art/Matt Art 105 gsm','Gloss Art/Matt Art 128 gsm','Gloss Art/Matt Art 157 gsm','Art Card 260 gsm','Whitecard 150 gsm','Whitecard 210 gsm','Whitecard 240 gsm','Art Card 310 gsm','Art Card 350 gsm') NOT NULL,
+  `cutt_text_paper` enum('Art Card 190 gsm','Art Card 210 gsm','Art Card 260 gsm','Art Card 310 gsm','Art Card 350 gsm','Gloss Art/Matt Art 105 gsm','Gloss Art/Matt Art 128 gsm','Gloss Art/Matt Art 157 gsm','Whitecard 150 gsm','Whitecard 210 gsm','Whitecard 240 gsm','Woodfree 100 gsm','Woodfree 120 gsm','Woodfree 80 gsm') NOT NULL,
   `cutt_printing` enum('1/0C','1/1C','4/0C','4/4C') NOT NULL,
-  `cutt_coating` enum('No coating','PVC','Varnish') NOT NULL,
+  `cutt_text_coating` enum('No coating','PVC','Varnish') NOT NULL,
   `cutt_1000` float NOT NULL,
   `cutt_2000` float NOT NULL,
   `cutt_3000` float NOT NULL,
   `cutt_4000` float NOT NULL,
   `cutt_5000` float NOT NULL,
-  `cutt_created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `cutt_created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `cutting_sheet`
+--
+
+INSERT INTO `cutting_sheet` (`cutt_id`, `cutt_type`, `cutt_finished_size`, `cutt_page`, `cutt_text_paper`, `cutt_printing`, `cutt_text_coating`, `cutt_1000`, `cutt_2000`, `cutt_3000`, `cutt_4000`, `cutt_5000`, `cutt_created_at`) VALUES
+(1, 'Cutting Sheet', 'A4', '1', 'Woodfree 80 gsm', '4/0C', 'No coating', 100, 200.52, 364, 435, 8.2, '2023-06-23 14:25:09'),
+(2, 'Cutting Sheet', 'A4', '1', 'Woodfree 100 gsm', '4/0C', 'No coating', 5345, 345345000, 45345, 345, 0.9, '2023-06-23 14:25:09');
 
 -- --------------------------------------------------------
 
@@ -134,24 +143,24 @@ CREATE TABLE `folding` (
   `fold_open_size` enum('630 x 297 mm.','840 x 297 mm.','A2','A3','A4','B2','B3','B4') NOT NULL,
   `fold_column` enum('1 Fold 2 Column','2 Fold 3 Column','2 Fold 4 Column','3 Fold 4 Column','3 Fold 8 Column') NOT NULL,
   `fold_page` enum('4','6','8','16') NOT NULL,
-  `fold_cover_paper` enum('Art Card 210 gsm','Woodfree 80 gsm','Art Card 190 gsm','Art Card 230 gsm','Woodfree 100 gsm','Woodfree 120 gsm','White Card  120 gsm','White Card 150 gsm','Gloss Art/Matt Art 105 gsm','Gloss Art/Matt Art 128 gsm','Gloss Art/Matt Art 157 gsm','Art Card 260 gsm','Whitecard 150 gsm','Whitecard 210 gsm','Whitecard 240 gsm','Art Card 310 gsm','Art Card 350 gsm') NOT NULL,
+  `fold_text_paper` enum('Art Card 190 gsm','Art Card 210 gsm','Art Card 260 gsm','Art Card 310 gsm','Art Card 350 gsm','Gloss Art/Matt Art 105 gsm','Gloss Art/Matt Art 128 gsm','Gloss Art/Matt Art 157 gsm','Whitecard 150 gsm','Whitecard 210 gsm','Whitecard 240 gsm','Woodfree 100 gsm','Woodfree 120 gsm','Woodfree 80 gsm') NOT NULL,
   `fold_printing` enum('1/0C','1/1C','4/0C','4/4C') NOT NULL,
-  `fold_coating` enum('No coating','PVC','Varnish') NOT NULL,
+  `fold_text_coating` enum('No coating','PVC','Varnish') NOT NULL,
   `fold_1000` float NOT NULL,
   `fold_2000` float NOT NULL,
   `fold_3000` float NOT NULL,
   `fold_4000` float NOT NULL,
   `fold_5000` float NOT NULL,
-  `fold_created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `fold_created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `folding`
 --
 
-INSERT INTO `folding` (`fold_id`, `fold_type`, `fold_finished_size`, `fold_open_size`, `fold_column`, `fold_page`, `fold_cover_paper`, `fold_printing`, `fold_coating`, `fold_1000`, `fold_2000`, `fold_3000`, `fold_4000`, `fold_5000`, `fold_created_at`) VALUES
-(1, 'Folding', 'A5', 'A4', '1 Fold 2 Column', '4', 'Woodfree 80 gsm', '4/4C', 'No coating', 100, 200.52, 364, 435, 8.2, '2023-06-21 18:22:11'),
-(2, 'Folding', 'A5', 'A4', '1 Fold 2 Column', '4', 'Woodfree 100 gsm', '4/4C', 'No coating', 5345, 345345000, 45345, 345, 0.9, '2023-06-21 18:22:11');
+INSERT INTO `folding` (`fold_id`, `fold_type`, `fold_finished_size`, `fold_open_size`, `fold_column`, `fold_page`, `fold_text_paper`, `fold_printing`, `fold_text_coating`, `fold_1000`, `fold_2000`, `fold_3000`, `fold_4000`, `fold_5000`, `fold_created_at`) VALUES
+(1, 'Folding', 'A5', 'A4', '1 Fold 2 Column', '4', 'Woodfree 80 gsm', '4/4C', 'No coating', 100, 200.52, 364, 435, 8.2, '2023-06-23 11:43:48'),
+(2, 'Folding', 'A5', 'A4', '1 Fold 2 Column', '4', 'Woodfree 100 gsm', '4/4C', 'No coating', 5345, 345345000, 45345, 345, 0.9, '2023-06-23 11:43:48');
 
 -- --------------------------------------------------------
 
@@ -165,7 +174,7 @@ CREATE TABLE `news` (
   `topic` text NOT NULL,
   `detail` text NOT NULL,
   `status` enum('Publish','Draft') NOT NULL DEFAULT 'Publish',
-  `created_at` datetime DEFAULT CURRENT_TIMESTAMP
+  `created_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -188,7 +197,7 @@ CREATE TABLE `perfect_binding` (
   `perf_cover` enum('4') NOT NULL,
   `perf_text` enum('4','8','12','16','20','24','28','32','36','40','44','48','52','56','60','64','72','80','88','96','104','112','120','128','136','144','152','160','168','176','184','192','200') NOT NULL,
   `perf_cover_paper` enum('Art Card 210 gsm','Woodfree 80 gsm','Art Card 190 gsm','Art Card 230 gsm','Woodfree 100 gsm','Woodfree 120 gsm','White Card  120 gsm','White Card 150 gsm','Gloss Art/Matt Art 105 gsm','Gloss Art/Matt Art 128 gsm','Gloss Art/Matt Art 157 gsm','Art Card 260 gsm','Whitecard 150 gsm','Whitecard 210 gsm','Whitecard 240 gsm','Art Card 310 gsm','Art Card 350 gsm') NOT NULL,
-  `perf_text_paper` enum('Woodfree 80 gsm','Woodfree 100 gsm','Woodfree 120 gsm','Gloss Art/Matt Art 105 gsm','Gloss Art/Matt Art 128 gsm','Gloss Art/Matt Art 157 gsm') NOT NULL,
+  `perf_text_paper` enum('Art Card 190 gsm','Art Card 210 gsm','Art Card 260 gsm','Art Card 310 gsm','Art Card 350 gsm','Gloss Art/Matt Art 105 gsm','Gloss Art/Matt Art 128 gsm','Gloss Art/Matt Art 157 gsm','Whitecard 150 gsm','Whitecard 210 gsm','Whitecard 240 gsm','Woodfree 100 gsm','Woodfree 120 gsm','Woodfree 80 gsm') NOT NULL,
   `perf_printing` enum('1/0C','1/1C','4/0C','4/4C') NOT NULL,
   `perf_cover_coating` enum('No coating','PVC','Varnish') NOT NULL,
   `perf_text_coating` enum('No coating','PVC','Varnish') NOT NULL,
@@ -197,7 +206,7 @@ CREATE TABLE `perfect_binding` (
   `perf_3000` float NOT NULL,
   `perf_4000` float NOT NULL,
   `perf_5000` float NOT NULL,
-  `perf_created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `perf_created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -217,7 +226,7 @@ INSERT INTO `perfect_binding` (`perf_id`, `perf_type`, `perf_finished_size`, `pe
 CREATE TABLE `printing` (
   `printing_id` int(11) NOT NULL,
   `printing_name` varchar(255) NOT NULL,
-  `printing_created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `printing_created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -243,7 +252,7 @@ CREATE TABLE `saddle_stitch` (
   `sadd_cover` enum('4') NOT NULL,
   `sadd_text` enum('4','8','12','16','20','24','28','32','36','40','44','48','52','56','60','64','72','80','88','96','104','112','120','128','136','144','152','160','168','176','184','192','200') NOT NULL,
   `sadd_cover_paper` enum('Art Card 210 gsm','Woodfree 80 gsm','Art Card 190 gsm','Art Card 230 gsm','Woodfree 100 gsm','Woodfree 120 gsm','White Card  120 gsm','White Card 150 gsm','Gloss Art/Matt Art 105 gsm','Gloss Art/Matt Art 128 gsm','Gloss Art/Matt Art 157 gsm','Art Card 260 gsm','Whitecard 150 gsm','Whitecard 210 gsm','Whitecard 240 gsm','Art Card 310 gsm','Art Card 350 gsm') NOT NULL,
-  `sadd_text_paper` enum('Woodfree 80 gsm','Woodfree 100 gsm','Woodfree 120 gsm','Gloss Art/Matt Art 105 gsm','Gloss Art/Matt Art 128 gsm','Gloss Art/Matt Art 157 gsm') NOT NULL,
+  `sadd_text_paper` enum('Art Card 190 gsm','Art Card 210 gsm','Art Card 260 gsm','Art Card 310 gsm','Art Card 350 gsm','Gloss Art/Matt Art 105 gsm','Gloss Art/Matt Art 128 gsm','Gloss Art/Matt Art 157 gsm','Whitecard 150 gsm','Whitecard 210 gsm','Whitecard 240 gsm','Woodfree 100 gsm','Woodfree 120 gsm','Woodfree 80 gsm') NOT NULL,
   `sadd_printing` enum('1/0C','1/1C','4/0C','4/4C') NOT NULL,
   `sadd_cover_coating` enum('No coating','PVC','Varnish') NOT NULL,
   `sadd_text_coating` enum('No coating','PVC','Varnish') NOT NULL,
@@ -252,7 +261,7 @@ CREATE TABLE `saddle_stitch` (
   `sadd_3000` float NOT NULL,
   `sadd_4000` float NOT NULL,
   `sadd_5000` float NOT NULL,
-  `sadd_created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `sadd_created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -272,7 +281,7 @@ INSERT INTO `saddle_stitch` (`sadd_id`, `sadd_type`, `sadd_finished_size`, `sadd
 CREATE TABLE `text_no` (
   `text_no_id` int(11) NOT NULL,
   `text_no_name` varchar(255) NOT NULL,
-  `text_no_created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `text_no_created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -323,7 +332,7 @@ INSERT INTO `text_no` (`text_no_id`, `text_no_name`, `text_no_created_at`) VALUE
 CREATE TABLE `text_paper` (
   `text_id` int(11) NOT NULL,
   `text_name` varchar(255) NOT NULL,
-  `text_created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `text_created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -336,7 +345,15 @@ INSERT INTO `text_paper` (`text_id`, `text_name`, `text_created_at`) VALUES
 (3, 'Woodfree 120 gsm', '2023-06-12 14:32:39'),
 (4, 'Gloss Art/Matt Art 105 gsm', '2023-06-12 14:32:39'),
 (5, 'Gloss Art/Matt Art 128 gsm', '2023-06-12 14:32:39'),
-(6, 'Gloss Art/Matt Art 157 gsm', '2023-06-12 14:32:39');
+(6, 'Gloss Art/Matt Art 157 gsm', '2023-06-12 14:32:39'),
+(7, 'Art Card 190 gsm', '2023-06-23 10:52:34'),
+(8, 'Art Card 210 gsm', '2023-06-23 10:52:51'),
+(9, 'Whitecard 150 gsm', '2023-06-23 10:52:58'),
+(10, 'Whitecard 210 gsm', '2023-06-23 10:53:04'),
+(11, 'Whitecard 240 gsm', '2023-06-23 10:53:11'),
+(12, 'Art Card 260 gsm', '2023-06-23 10:53:17'),
+(13, 'Art Card 310 gsm', '2023-06-23 10:53:25'),
+(14, 'Art Card 350 gsm', '2023-06-23 10:53:32');
 
 -- --------------------------------------------------------
 
@@ -353,7 +370,7 @@ CREATE TABLE `users` (
   `email` text NOT NULL,
   `level` enum('Administrator','User') NOT NULL DEFAULT 'User',
   `status` enum('Active','Inactive') NOT NULL DEFAULT 'Active',
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -448,61 +465,74 @@ ALTER TABLE `users`
 --
 ALTER TABLE `banner`
   MODIFY `banner_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
 --
 -- AUTO_INCREMENT for table `contact`
 --
 ALTER TABLE `contact`
   MODIFY `contact_id` int(11) NOT NULL AUTO_INCREMENT;
+
 --
 -- AUTO_INCREMENT for table `cover_paper`
 --
 ALTER TABLE `cover_paper`
   MODIFY `cp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
 --
 -- AUTO_INCREMENT for table `cutting_sheet`
 --
 ALTER TABLE `cutting_sheet`
-  MODIFY `cutt_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cutt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- AUTO_INCREMENT for table `folding`
 --
 ALTER TABLE `folding`
   MODIFY `fold_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- AUTO_INCREMENT for table `news`
 --
 ALTER TABLE `news`
   MODIFY `news_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
 --
 -- AUTO_INCREMENT for table `perfect_binding`
 --
 ALTER TABLE `perfect_binding`
   MODIFY `perf_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- AUTO_INCREMENT for table `printing`
 --
 ALTER TABLE `printing`
   MODIFY `printing_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
 --
 -- AUTO_INCREMENT for table `saddle_stitch`
 --
 ALTER TABLE `saddle_stitch`
   MODIFY `sadd_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
 --
 -- AUTO_INCREMENT for table `text_no`
 --
 ALTER TABLE `text_no`
   MODIFY `text_no_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+
 --
 -- AUTO_INCREMENT for table `text_paper`
 --
 ALTER TABLE `text_paper`
-  MODIFY `text_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `text_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
