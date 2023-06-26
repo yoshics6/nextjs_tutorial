@@ -24,51 +24,89 @@ import Fade from "@mui/material/Fade";
 import { Icon } from "react-icons-kit";
 import { eye } from "react-icons-kit/feather/eye";
 import { eyeOff } from "react-icons-kit/feather/eyeOff";
+
 import { isAbsolute } from "path";
+
+import { appDispatch, appSelector } from "@/store/hooks";
+import { getResetPasswordById } from "@/features/admin/forgot_password";
+import router, { useRouter } from "next/router";
 
 type Props = {};
 
-interface User {
-  username: string;
+interface ForgotPassword {
+  email: string;
   password: string;
+  confirm_password: string;
 }
 
-interface UserModal {
-  forgot_password: string;
-}
+const ResetPassword = ({}: Props) => {
+  const dispatch = appDispatch();
+  const id: any = router.query.token;
+  const [reset_password, setResetPassword] = React.useState<String>("");
 
-const Login = ({}: Props) => {
+  React.useEffect(() => {
+    dispatch(getResetPasswordById(id)).then((value: any) => {
+      if (value.payload) {
+        if (value.payload.length > 0) {
+          setResetPassword(value.payload[0].email);
+        }
+      }
+    });
+  }, [dispatch, id]);
+
   const errorColor = red[500];
-  const defaultValue: User = { username: "", password: "" };
+  const defaultValue: ForgotPassword = {
+    email: "",
+    password: "",
+    confirm_password: "",
+  };
   const formValidateSchema = Yup.object().shape({
-    username: Yup.string().required("Username is required").trim(),
     password: Yup.string().required("Password is required").trim(),
+    confirm_password: Yup.string()
+      .required("Confirm Password is required")
+      .trim(),
   });
 
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<User>({
+  } = useForm<ForgotPassword>({
     defaultValues: defaultValue,
     resolver: yupResolver(formValidateSchema),
   });
 
-  const onSubmit = async (data: User) => {
+  const onSubmit = async (data: ForgotPassword) => {
     try {
       const formData = new FormData();
-      formData.append("username", data.username);
+      formData.append("email", String(reset_password));
       formData.append("password", data.password);
+      formData.append("confirm_password", data.confirm_password);
+
       const URL = process.env.NEXT_PUBLIC_BASE_URL_API;
-      await fetch(`${URL}/auth/login`, {
-        method: "POST",
+      await fetch(`${URL}/forgot_password/add`, {
+        method: "PUT",
         body: formData,
       })
         .then(async (rawResponse) => {
           rawResponse.json().then((data) => {
-            if (data.status == "success") {
+            if (data == "weak") {
+              Swal.fire(
+                "Failed!",
+                "The password must have at least 8 characters and contain numbers and special letters. <br> Example: Asd1234!",
+                "error"
+              ).then(function () {
+                return false;
+              });
+            } else if (data == "Please check your password") {
+              Swal.fire("Failed!", "Please check your password", "error").then(
+                function () {
+                  return false;
+                }
+              );
+            } else if (data.status == "success") {
               Swal.fire("Success!", "", "success").then(function () {
-                location.href = "/";
+                location.href = "/login";
               });
               return false;
             } else {
@@ -147,6 +185,10 @@ const Login = ({}: Props) => {
   const [type, setType] = React.useState<string>("password");
   const [icon, setIcon] = React.useState(eyeOff);
 
+  const eyeOffConfirm = eyeOff;
+  const [typec, setTypeC] = React.useState<string>("password");
+  const [iconc, setIconC] = React.useState(eyeOffConfirm);
+
   const handleToggle = () => {
     if (type === "password") {
       setIcon(eye);
@@ -154,6 +196,16 @@ const Login = ({}: Props) => {
     } else {
       setIcon(eyeOff);
       setType("password");
+    }
+  };
+
+  const handleToggleConfirm = () => {
+    if (typec === "password") {
+      setIconC(eye);
+      setTypeC("text");
+    } else {
+      setIconC(eyeOffConfirm);
+      setTypeC("password");
     }
   };
 
@@ -169,12 +221,23 @@ const Login = ({}: Props) => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          weigth: "100px",
         }}
       >
-        <Typography component="h1" variant="h4">
+        <Typography component="h1" variant="h5">
           Printing Web Platform
         </Typography>
         <br />
+        <Typography component="h1" variant="h6" style={{ color: "blue" }}>
+          PLEASE INPUT YOUR NEW PASSWORD
+        </Typography>
+        <br />
+        <Typography component="h1" align="center" style={{ color: "red" }}>
+          The password must be at least 8 figures and contain at least 1 upper
+          case , numeric , and special character.
+        </Typography>
+        <br />
+
         <Box
           component="form"
           onSubmit={handleSubmit(onSubmit)}
@@ -185,23 +248,24 @@ const Login = ({}: Props) => {
             render={({ field }) => (
               <TextField
                 {...field}
-                id="username"
-                label="Username"
+                id="email"
+                label="Email"
                 type="text"
                 fullWidth
-                autoComplete="off"
-                InputLabelProps={{
-                  shrink: true,
+                value={reset_password}
+                InputProps={{
+                  readOnly: true,
                 }}
+                variant="filled"
               />
             )}
-            name="username"
+            name="email"
             control={control}
             defaultValue=""
           />
-          {errors.username?.message && (
+          {errors.email?.message && (
             <Typography sx={{ color: errorColor }}>
-              {errors.username?.message}
+              {errors.email?.message}
             </Typography>
           )}
           <br />
@@ -232,6 +296,37 @@ const Login = ({}: Props) => {
               {errors.password?.message}
             </Typography>
           )}
+          <br />
+          <Controller
+            render={({ field }) => (
+              <TextField
+                {...field}
+                id="confirm_password"
+                label="Confirm Password"
+                type={typec}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                fullWidth
+                autoComplete="new-password"
+                sx={{ marginTop: "10px" }}
+              />
+            )}
+            name="confirm_password"
+            control={control}
+            defaultValue=""
+          />
+          <span
+            className="password-toogle-icon-confirm"
+            onClick={handleToggleConfirm}
+          >
+            <Icon icon={iconc} size={25} />
+          </span>
+          {errors.confirm_password?.message && (
+            <Typography sx={{ color: errorColor }}>
+              {errors.confirm_password?.message}
+            </Typography>
+          )}
           {/* <FormControlLabel
             control={
               <Checkbox
@@ -240,7 +335,7 @@ const Login = ({}: Props) => {
                 onClick={handleToggle}
               />
             }
-            label="View password"
+            label="View confirm_password"
           /> */}
           <Button
             type="submit"
@@ -248,20 +343,8 @@ const Login = ({}: Props) => {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Login
+            Reset
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Button onClick={handleOpen}>
-                <u>Forgot password</u>
-              </Button>
-            </Grid>
-            {/* <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid> */}
-          </Grid>
         </Box>
 
         {/* Modal */}
@@ -325,4 +408,4 @@ const Login = ({}: Props) => {
   );
 };
 
-export default Login;
+export default ResetPassword;

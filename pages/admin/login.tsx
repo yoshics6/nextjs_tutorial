@@ -11,6 +11,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 //MUI
 import { Container, Box, TextField, Button, Typography } from "@mui/material";
 import { red } from "@mui/material/colors";
+import { Icon } from "react-icons-kit";
+import { eye } from "react-icons-kit/feather/eye";
+import { eyeOff } from "react-icons-kit/feather/eyeOff";
 
 type Props = {};
 
@@ -35,6 +38,20 @@ const Login = ({}: Props) => {
     defaultValues: defaultValue,
     resolver: yupResolver(formValidateSchema),
   });
+
+  // view password
+  const [type, setType] = React.useState<string>("password");
+  const [icon, setIcon] = React.useState(eyeOff);
+
+  const handleToggle = () => {
+    if (type === "password") {
+      setIcon(eye);
+      setType("text");
+    } else {
+      setIcon(eyeOff);
+      setType("password");
+    }
+  };  
 
   const onSubmit = async (data: User) => {
     try {
@@ -116,7 +133,7 @@ const Login = ({}: Props) => {
               {...field}
               id="password"
               label="Password"
-              type="password"
+              type={type}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -129,6 +146,9 @@ const Login = ({}: Props) => {
           control={control}
           defaultValue=""
         />
+        <span className="password-toogle-icon" onClick={handleToggle}>
+          <Icon icon={icon} size={25} />
+        </span>
         {errors.password?.message && (
           <Typography sx={{ color: errorColor }}>
             {errors.password?.message}

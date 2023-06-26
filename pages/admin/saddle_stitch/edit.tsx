@@ -252,7 +252,7 @@ function Edit() {
                     fullWidth
                   >
                     {rows_text_no.length > 0 ? rows_text_no.map((value: any) => (
-                        <MenuItem value={value?.text_no_name}>
+                        <MenuItem key={value?.text_no_id} value={value?.text_no_name}>
                           {value?.text_no_name}
                         </MenuItem>
                       ))
@@ -281,7 +281,7 @@ function Edit() {
                   >
                     {rows_data_cover_paper.length > 0
                       ? rows_data_cover_paper.map((value: any) => (
-                          <MenuItem value={value?.cp_name}>
+                          <MenuItem key={value?.cp_id} value={value?.cp_name}>
                             {value?.cp_name}
                           </MenuItem>
                         ))
@@ -310,7 +310,7 @@ function Edit() {
                   >
                     {rows_text_paper.length > 0
                       ? rows_text_paper.map((value: any) => (
-                          <MenuItem value={value?.text_name}>
+                          <MenuItem key={value?.text_id} value={value?.text_name}>
                             {value?.text_name}
                           </MenuItem>
                         ))
@@ -339,7 +339,7 @@ function Edit() {
                   >
                     {rows_printing.length > 0
                       ? rows_printing.map((value: any) => (
-                          <MenuItem value={value?.printing_name}>
+                          <MenuItem key={value?.printing_id} value={value?.printing_name}>
                             {value?.printing_name}
                           </MenuItem>
                         ))
