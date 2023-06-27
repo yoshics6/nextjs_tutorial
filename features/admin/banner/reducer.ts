@@ -12,24 +12,6 @@ const initialState: bannerState = {
     arr: "",
     created_at: "",
   },
-  dataEN: {
-    banner_id: "",
-    topic: "",
-    post_date: "",
-    status: "",
-    file: "",
-    arr: "",
-    created_at: "",
-  },
-  dataTH: {
-    banner_id: "",
-    topic: "",
-    post_date: "",
-    status: "",
-    file: "",
-    arr: "",
-    created_at: "",
-  },
 };
 
 export const bannerReducer = createReducer(initialState, (builder) => {

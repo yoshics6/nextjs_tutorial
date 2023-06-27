@@ -18,14 +18,14 @@ declare module "next" {
     decoded: any;
   }
 }
-// interface Data {
-//   banner_id?: string;
-//   post_date?: string;
-//   topic?: string;
-//   filename?: string;
-//   status?: string;
-// }
-// interface Banner extends Array<Data> {}
+interface Data {
+  banner_id?: string;
+  post_date?: string;
+  topic?: string;
+  filename?: string;
+  status?: string;
+}
+interface Banner extends Array<Data> {}
 // Middleware
 router.use(async (req: NextApiRequest, res: NextApiResponse, next) => {
   const decoded = await adminAuth(req, res);

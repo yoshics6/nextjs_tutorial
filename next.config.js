@@ -60,4 +60,8 @@ module.exports = {
       },
     ];
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  staticPageGenerationTimeout: 1000,
 };

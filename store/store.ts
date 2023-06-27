@@ -17,7 +17,6 @@ import { newsReducer } from "@/features/admin/news";
 import { userReducer } from "@/features/admin/user";
 import { contactReducer } from "@/features/admin/contact";
 import { bannerReducer } from "@/features/admin/banner";
-import { testReducer } from "@/features/test";
 import { coverPaperReducer } from "@/features/admin/cover_paper";
 import { textPaperReducer } from "@/features/admin/text_paper";
 import { textNoReducer } from "@/features/admin/text_no";
@@ -33,7 +32,6 @@ const combinedReducer: any = combineReducers({
   user: userReducer,
   contact: contactReducer,
   banner: bannerReducer,
-  teststore: testReducer,
   cover_paper: coverPaperReducer,
   text_paper: textPaperReducer,
   text_no: textNoReducer,

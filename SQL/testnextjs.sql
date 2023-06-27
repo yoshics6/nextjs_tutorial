@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
--- https://www.phpmyadmin.net/
+-- version 4.5.1
+-- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 23, 2023 at 11:10 AM
--- Server version: 10.4.18-MariaDB
--- PHP Version: 8.0.3
+-- Generation Time: Jun 27, 2023 at 12:15 PM
+-- Server version: 10.1.19-MariaDB
+-- PHP Version: 7.0.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -34,8 +33,8 @@ CREATE TABLE `banner` (
   `filename` text NOT NULL,
   `status` enum('Active','Inactive') NOT NULL DEFAULT 'Active',
   `active` enum('Yes','No') NOT NULL DEFAULT 'Yes',
-  `created_at` datetime DEFAULT current_timestamp(),
-  `arr` int(11) NOT NULL DEFAULT 0
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `arr` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -61,7 +60,7 @@ CREATE TABLE `contact` (
   `phone_number` text NOT NULL,
   `email` text NOT NULL,
   `message` text NOT NULL,
-  `created_at` datetime DEFAULT current_timestamp(),
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `subject` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -74,7 +73,7 @@ CREATE TABLE `contact` (
 CREATE TABLE `cover_paper` (
   `cp_id` int(11) NOT NULL,
   `cp_name` varchar(255) NOT NULL,
-  `cp_created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `cp_created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -119,7 +118,7 @@ CREATE TABLE `cutting_sheet` (
   `cutt_3000` float NOT NULL,
   `cutt_4000` float NOT NULL,
   `cutt_5000` float NOT NULL,
-  `cutt_created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `cutt_created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -128,7 +127,9 @@ CREATE TABLE `cutting_sheet` (
 
 INSERT INTO `cutting_sheet` (`cutt_id`, `cutt_type`, `cutt_finished_size`, `cutt_page`, `cutt_text_paper`, `cutt_printing`, `cutt_text_coating`, `cutt_1000`, `cutt_2000`, `cutt_3000`, `cutt_4000`, `cutt_5000`, `cutt_created_at`) VALUES
 (1, 'Cutting Sheet', 'A4', '1', 'Woodfree 80 gsm', '4/0C', 'No coating', 100, 200.52, 364, 435, 8.2, '2023-06-23 14:25:09'),
-(2, 'Cutting Sheet', 'A4', '1', 'Woodfree 100 gsm', '4/0C', 'No coating', 5345, 345345000, 45345, 345, 0.9, '2023-06-23 14:25:09');
+(2, 'Cutting Sheet', 'A4', '1', 'Woodfree 100 gsm', '4/0C', 'No coating', 5345, 345345000, 45345, 345, 0.9, '2023-06-23 14:25:09'),
+(3, 'Cutting Sheet', 'A4', '1', 'Woodfree 100 gsm', '4/0C', 'No coating', 5345, 345345000, 45345, 345, 0.9, '2023-06-24 12:50:46'),
+(4, 'Cutting Sheet', 'A4', '1', 'Woodfree 80 gsm', '4/0C', 'No coating', 100, 200.52, 364, 435, 8.2, '2023-06-24 12:50:46');
 
 -- --------------------------------------------------------
 
@@ -151,7 +152,7 @@ CREATE TABLE `folding` (
   `fold_3000` float NOT NULL,
   `fold_4000` float NOT NULL,
   `fold_5000` float NOT NULL,
-  `fold_created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `fold_created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -174,7 +175,7 @@ CREATE TABLE `news` (
   `topic` text NOT NULL,
   `detail` text NOT NULL,
   `status` enum('Publish','Draft') NOT NULL DEFAULT 'Publish',
-  `created_at` datetime DEFAULT current_timestamp()
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -206,7 +207,7 @@ CREATE TABLE `perfect_binding` (
   `perf_3000` float NOT NULL,
   `perf_4000` float NOT NULL,
   `perf_5000` float NOT NULL,
-  `perf_created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `perf_created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -226,7 +227,7 @@ INSERT INTO `perfect_binding` (`perf_id`, `perf_type`, `perf_finished_size`, `pe
 CREATE TABLE `printing` (
   `printing_id` int(11) NOT NULL,
   `printing_name` varchar(255) NOT NULL,
-  `printing_created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `printing_created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -261,7 +262,7 @@ CREATE TABLE `saddle_stitch` (
   `sadd_3000` float NOT NULL,
   `sadd_4000` float NOT NULL,
   `sadd_5000` float NOT NULL,
-  `sadd_created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `sadd_created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -281,7 +282,7 @@ INSERT INTO `saddle_stitch` (`sadd_id`, `sadd_type`, `sadd_finished_size`, `sadd
 CREATE TABLE `text_no` (
   `text_no_id` int(11) NOT NULL,
   `text_no_name` varchar(255) NOT NULL,
-  `text_no_created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `text_no_created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -332,7 +333,7 @@ INSERT INTO `text_no` (`text_no_id`, `text_no_name`, `text_no_created_at`) VALUE
 CREATE TABLE `text_paper` (
   `text_id` int(11) NOT NULL,
   `text_name` varchar(255) NOT NULL,
-  `text_created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `text_created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -370,7 +371,7 @@ CREATE TABLE `users` (
   `email` text NOT NULL,
   `level` enum('Administrator','User') NOT NULL DEFAULT 'User',
   `status` enum('Active','Inactive') NOT NULL DEFAULT 'Active',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -378,7 +379,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `reset_token`, `username`, `password`, `fullname`, `email`, `level`, `status`, `created_at`) VALUES
-(1, '', 'admin', '$2b$12$bkgPnr8sf8J1YQy/BcwxEuQ1eeETvVsu7gxS4GvDZpYPmFhuXIwKO', 'Administrator', 'admin@noreply.co.th', 'Administrator', 'Active', '2023-05-31 08:02:01');
+(1, 'Mq07B6K0hL4S9ppnnyXH', 'admin', '$2b$12$bkgPnr8sf8J1YQy/BcwxEuQ1eeETvVsu7gxS4GvDZpYPmFhuXIwKO', 'Administrator', 'yoshics6@gmail.com', 'Administrator', 'Active', '2023-05-31 08:02:01');
 
 --
 -- Indexes for dumped tables
@@ -465,74 +466,61 @@ ALTER TABLE `users`
 --
 ALTER TABLE `banner`
   MODIFY `banner_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
 --
 -- AUTO_INCREMENT for table `contact`
 --
 ALTER TABLE `contact`
   MODIFY `contact_id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `cover_paper`
 --
 ALTER TABLE `cover_paper`
   MODIFY `cp_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
-
 --
 -- AUTO_INCREMENT for table `cutting_sheet`
 --
 ALTER TABLE `cutting_sheet`
-  MODIFY `cutt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
+  MODIFY `cutt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `folding`
 --
 ALTER TABLE `folding`
   MODIFY `fold_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
 --
 -- AUTO_INCREMENT for table `news`
 --
 ALTER TABLE `news`
   MODIFY `news_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
 --
 -- AUTO_INCREMENT for table `perfect_binding`
 --
 ALTER TABLE `perfect_binding`
   MODIFY `perf_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
 --
 -- AUTO_INCREMENT for table `printing`
 --
 ALTER TABLE `printing`
   MODIFY `printing_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
 --
 -- AUTO_INCREMENT for table `saddle_stitch`
 --
 ALTER TABLE `saddle_stitch`
   MODIFY `sadd_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
 --
 -- AUTO_INCREMENT for table `text_no`
 --
 ALTER TABLE `text_no`
   MODIFY `text_no_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
-
 --
 -- AUTO_INCREMENT for table `text_paper`
 --
 ALTER TABLE `text_paper`
   MODIFY `text_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
-
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-COMMIT;
-
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
