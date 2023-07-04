@@ -18,7 +18,9 @@ import router from "next/router";
 const initialValues: any = {
   username: "",
   fullname: "",
+  password: "",
   email: "",
+  tel:"",
   status: "active",
   level: "Administrator",
 };
@@ -73,6 +75,15 @@ function Add() {
             />
             <br />
             <br />
+            <Field
+              fullWidth
+              component={TextFieldInput}
+              name="tel"
+              type="tel"
+              label="Tel"
+            />
+            <br />
+            <br />
             {/* <Field
               name="status"
               style={{ marginTop: 16 }}
@@ -102,11 +113,11 @@ function Add() {
               style={{ marginTop: 16 }}
               component={() => (
                 <FormControl fullWidth>
-                  <InputLabel>Role</InputLabel>
+                  <InputLabel>Levle</InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    label="Role"
+                    label="Levle"
                     onChange={(e: any) => {
                       setLevel(e.target.value);
                     }}
@@ -115,6 +126,7 @@ function Add() {
                   >
                     {/* <MenuItem value="Normal User">Normal User</MenuItem> */}
                     <MenuItem value="Administrator">Administrator</MenuItem>
+                    <MenuItem value="User">User</MenuItem>
                   </Select>
                 </FormControl>
               )}
@@ -162,6 +174,7 @@ function Add() {
               if (!values.password) errors.password = "Enter Password";
               if (!values.fullname) errors.fullname = "Enter Fullname";
               if (!values.email) errors.email = "Enter Email";
+              if (!values.tel) errors.tel = "Enter Tel";
               // if (!values.status) errors.status = "Enter Status";
               if (!values.level) errors.level = "Enter Role";
               return errors;
@@ -173,6 +186,7 @@ function Add() {
               data.append("password", values.password);
               data.append("fullname", values.fullname);
               data.append("email", values.email);
+              data.append("tel", values.tel);
               data.append("status", "active");
               data.append("level", String(level));
               dispatch(addUser(data)).then((result: any) => {

@@ -308,6 +308,7 @@ const User: NextPage = () => {
                             <TableCell align="center">{row.fullname}</TableCell>
                             <TableCell align="center">{row.username}</TableCell>
                             <TableCell align="center">{row.email}</TableCell>
+                            <TableCell align="center">{row.tel}</TableCell>
                             {/* <TableCell align="center">
                               {row.status == "active" ? "Active" : "In Active"}
                             </TableCell> */}

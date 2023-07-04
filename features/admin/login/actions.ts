@@ -28,3 +28,9 @@ export const logout = createAsyncThunk("auth/logout", async () => {
   deleteCookie("access-token");
   location.href = "/admin/login";
 });
+
+// frontend logout
+export const logoutFrontend = createAsyncThunk("auth/logout", async () => {
+  deleteCookie("access-token");
+  location.href = "/login";
+});

@@ -4,9 +4,9 @@
 
 body {
   font-family: "DB Heavent";
-  font-size: 16px !important;
+  font-size: 14px !important;
   scroll-behavior: smooth !important;
-  background-color: #fff;
+  background-color: #d5e9ff;
 }
 
 a {
@@ -89,7 +89,7 @@ img {
 .menu ul li .submenu a {
   color: #fff;
   margin-top: 0px;
-  font-size: 18px;
+  font-size: 14px;
   display: inline-block;
   padding: 0;
 }
@@ -99,7 +99,7 @@ img {
 }
 .menu ul li a {
   font-family: "DB Heavent";
-  font-size: 24px;
+  font-size: 14px;
   color: #000;
   display: block;
   padding: 0 7px 0 7px;

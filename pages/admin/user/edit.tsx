@@ -34,6 +34,7 @@ function Edit() {
   const [password, setPassword] = React.useState<String>("");
   const [email, setEmail] = React.useState<String>("");
   const [level, setLevel] = React.useState<String>("");
+  const [tel, setTel] = React.useState<String>("");
 
   if (data) {
     if (data.length === 0) {
@@ -47,6 +48,7 @@ function Edit() {
           setUsername(value.payload[0].username);
           setFullname(value.payload[0].fullname);
           setEmail(value.payload[0].email);
+          setTel(value.payload[0].tel);
           setStatus(value.payload[0].status);
           setLevel(value.payload[0].level);
         }
@@ -57,7 +59,9 @@ function Edit() {
   const initialValues: any = {
     username: username,
     fullname: fullname,
+    password: password,
     email: email,
+    tel:tel,
     status: status,
     level: level,
   };
@@ -114,11 +118,26 @@ function Edit() {
               fullWidth
               component={TextFieldInput}
               name="email"
-              type="text"
+              type="email"
               label="Email"
               value={email}
               onChange={(e: any) => {
                 setEmail(e.target.value);
+              }}
+            />
+
+            <br />
+            <br />
+
+            <Field
+              fullWidth
+              component={TextFieldInput}
+              name="tel"
+              type="text"
+              label="Tel"
+              value={tel}
+              onChange={(e: any) => {
+                setTel(e.target.value);
               }}
             />
 
@@ -153,19 +172,19 @@ function Edit() {
               style={{ marginTop: 16 }}
               component={() => (
                 <FormControl fullWidth>
-                  <InputLabel>Role</InputLabel>
+                  <InputLabel>Level</InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    label="Role"
+                    label="Level"
                     onChange={(e: any) => {
                       setLevel(e.target.value);
                     }}
                     value={level}
                     fullWidth
                   >
-                    <MenuItem value="User">User</MenuItem>
                     <MenuItem value="Administrator">Administrator</MenuItem>
+                    <MenuItem value="User">User</MenuItem>
                   </Select>
                 </FormControl>
               )}
@@ -212,6 +231,7 @@ function Edit() {
               if (!String(username)) errors.username = "Enter Username";
               if (!String(fullname)) errors.fullname = "Enter Fullname";
               if (!String(email)) errors.email = "Enter Email";
+              if (!String(tel)) errors.tel = "Enter Tel";
               // if (!String(status)) errors.status = "Enter Status";
               if (!String(level)) errors.level = "Enter Role";
               return errors;
@@ -223,6 +243,7 @@ function Edit() {
               data.append("fullname", String(fullname));
               data.append("password", String(password));
               data.append("email", String(email));
+              data.append("tel", String(tel));
               data.append("status", "active");
               data.append("level", String(level));
 

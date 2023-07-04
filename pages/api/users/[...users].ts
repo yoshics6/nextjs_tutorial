@@ -24,6 +24,7 @@ interface UserData {
   user_id?: string;
   fullname?: string;
   email?: string;
+  tel?: string;
   username?: string;
   level?: string;
 }
@@ -41,7 +42,7 @@ router.get(
   async (req: NextApiRequest, res: NextApiResponse, next: any) => {
     try {
       const [response]: any = await connection.query(
-        `SELECT user_id, fullname, email, username, level FROM users WHERE (status = "Active" AND username != "admin")  ORDER BY fullname ASC, created_at DESC`
+        `SELECT * FROM users WHERE (status = "Active" AND username != "admin")  ORDER BY fullname ASC, created_at DESC`
       );
       res.status(200).json({ status: "success", data: response });
     } catch {
@@ -57,8 +58,9 @@ router.get(
     try {
       console.log(keyword);
       const [response]: any = await connection.query(
-        `SELECT user_id, fullname, email, username, level FROM users WHERE (status = "Active" AND username != "admin")  AND (fullname LIKE ? OR email LIKE ? OR username LIKE ? OR level LIKE ?) ORDER BY fullname ASC, created_at DESC`,
+        `SELECT * FROM users WHERE (status = "Active" AND username != "admin")  AND (fullname LIKE ? OR email LIKE ? OR username LIKE ? OR level LIKE ? OR tel LIKE ?) ORDER BY fullname ASC, created_at DESC`,
         [
+          "%" + keyword + "%",
           "%" + keyword + "%",
           "%" + keyword + "%",
           "%" + keyword + "%",
@@ -78,7 +80,7 @@ router.get(
     const { id } = req.query;
     try {
       const [response]: any = await connection.query(
-        `SELECT user_id, fullname, email, username, level FROM users WHERE status = "Active" AND username != "admin" AND user_id = ?`,
+        `SELECT * FROM users WHERE status = "Active" AND username != "admin" AND user_id = ?`,
         [id]
       );
       res.status(200).json({ status: "success", data: response });
@@ -93,7 +95,7 @@ router.put(
   async (req: NextApiRequest, res: NextApiResponse) => {
     const form = formidable();
     form.parse(req, async (err, fields, files) => {
-      const { username, password, fullname, email, level } = fields;
+      const { username, password, fullname, email, tel, level } = fields;
       await connection.query("ALTER TABLE users AUTO_INCREMENT = 1");
       const [check]: any = await connection.query(
         "SELECT * FROM users WHERE username = ? AND status = ? ",
@@ -102,9 +104,9 @@ router.put(
       if (check.length === 0) {
         const hashSync = bcrypt.hashSync(password, 12);
         await connection.query(
-          "INSERT INTO users (username, password, fullname, email, level) " +
-            " VALUES (?, ?, ?, ?, ?)",
-          [username, hashSync, fullname, email, level]
+          "INSERT INTO users (username, password, fullname, email, tel, level) " +
+            " VALUES (?, ?, ?, ?, ?, ?)",
+          [username, hashSync, fullname, email, tel, level]
         );
         res.status(200).json({ status: "success" });
       } else {
@@ -121,7 +123,7 @@ router.post(
   async (req: NextApiRequest, res: NextApiResponse) => {
     const form = formidable();
     form.parse(req, async (err, fields, files) => {
-      const { user_id, username, password, fullname, email, level } = fields;
+      const { user_id, username, password, fullname, email, tel, level } = fields;
       const [check]: any = await connection.query(
         "SELECT user_id FROM users WHERE status = 'active' AND user_id != ? AND username = ?",
         [user_id, username]
@@ -136,8 +138,8 @@ router.post(
           );
         }
         await connection.query(
-          "UPDATE users SET username = ?, fullname = ?, email = ?, level = ? WHERE user_id = ?",
-          [username, fullname, email, level, user_id]
+          "UPDATE users SET username = ?, fullname = ?, email = ?, tel = ?, level = ? WHERE user_id = ?",
+          [username, fullname, email, tel, level, user_id]
         );
         res.status(200).json({ status: "success" });
       } else {
@@ -211,10 +213,11 @@ async function importExcelUser(url: string) {
   let status = "success";
   await Promise.all(
     data.map(async (rows: any, index: any) => {
-      const fullname = rows["Fullname"];
-      const email = rows["Email"];
       const username = rows["Username"];
       const pass = rows["Password"];
+      const fullname = rows["Fullname"];
+      const email = rows["Email"];
+      const tel = rows["Tel"];
       const [check]: any = await connection.query(
         "SELECT user_id FROM users WHERE status = 'active' AND username = ? ",
         [username]
@@ -223,8 +226,8 @@ async function importExcelUser(url: string) {
         var hashedPassword = await bcrypt.hashSync(String(pass), 12);
         var password = hashedPassword;
         const [add] = await connection.query(
-          "INSERT INTO users (fullname , username ,  password , email, status, level) VALUES (? , ? , ? , ? , ? , ?)",
-          [fullname, username, password, email, "active", "User"]
+          "INSERT INTO users (fullname , username ,  password , email, tel, status, level) VALUES (? , ? , ? , ? , ? , ? , ?)",
+          [fullname, username, password, email, tel, "active", "User"]
         );
       } else {
         status = "duplicate";

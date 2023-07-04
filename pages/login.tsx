@@ -91,15 +91,19 @@ const Login = ({}: Props) => {
 
   // Modal
   const style = {
-    position: "absolute" as "absolute",
+    position: "absolute",
+    border: "2px solid #000",
+    bgcolor: "background.paper",
+    width: "50%",
+    height: "auto",
     top: "50%",
     left: "50%",
+    right: "auto",
+    bottom: "auto",
     transform: "translate(-50%, -50%)",
-    width: 600,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
     boxShadow: 24,
     p: 4,
+    textAlign: "center",
   };
 
   const [open, setOpen] = React.useState(false);
@@ -158,27 +162,28 @@ const Login = ({}: Props) => {
   };
 
   return (
-    <Container component="main" maxWidth="sm">
+    <Box
+      alignItems="center"
+      justifyContent="center"
+      minHeight="100vh"
+      display="flex"
+    >
       <Box
         sx={{
+          bgcolor: "background.paper",
           boxShadow: 10,
           borderRadius: 5,
-          px: 7,
-          py: 7,
-          marginTop: 30,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          p: 2,
         }}
+        style={{ width: 600 }}
       >
-        <Typography component="h1" variant="h4">
+        <Typography component="h1" variant="h4" style={{ textAlign: "center" }}>
           Printing Web Platform
         </Typography>
         <br />
         <Box
           component="form"
           onSubmit={handleSubmit(onSubmit)}
-          style={{ width: 500 }}
           autoComplete="off"
         >
           <Controller
@@ -279,7 +284,7 @@ const Login = ({}: Props) => {
           }}
         >
           <Fade in={open}>
-            <Box sx={style} style={{ textAlign: "center" }}>
+            <Box sx={style}>
               <Typography
                 id="transition-modal-title"
                 variant="h6"
@@ -289,12 +294,7 @@ const Login = ({}: Props) => {
                 <span style={{ color: "red" }}>*</span>
               </Typography>
               <br />
-              <Box
-                component="form"
-                onSubmit={onSubmitModal}
-                style={{ width: 500 }}
-                autoComplete="off"
-              >
+              <Box component="form" onSubmit={onSubmitModal} autoComplete="off">
                 <TextField
                   required
                   fullWidth
@@ -321,7 +321,7 @@ const Login = ({}: Props) => {
           </Fade>
         </Modal>
       </Box>
-    </Container>
+    </Box>
   );
 };
 

@@ -38,17 +38,17 @@ export const headCells: readonly HeadCell[] = [
     disablePadding: true,
     label: "Email",
   },
-  // {
-  //   id: "status",
-  //   numeric: false,
-  //   disablePadding: true,
-  //   label: "Status",
-  // },
+  {
+    id: "tel",
+    numeric: false,
+    disablePadding: true,
+    label: "Tel",
+  },
   {
     id: "level",
     numeric: false,
     disablePadding: true,
-    label: "Role",
+    label: "Level",
   },
   {
     id: "-",
